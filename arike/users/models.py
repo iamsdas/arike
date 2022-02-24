@@ -1,7 +1,9 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+
+from arike.facilities.models import Facility
 
 
 class UserRoles(models.TextChoices):
@@ -21,8 +23,9 @@ class User(AbstractUser):
     role = models.CharField(
         max_length=2, choices=UserRoles.choices, default=UserRoles.DISTRICT_ADMIN
     )
-    phone = models.CharField(max_length=16, unique=True, null=True)
-    is_verified = models.BooleanField(default=False)
+    phone = models.CharField(max_length=16, unique=True)
+    is_verified = models.BooleanField(default=False, blank=True)
+    facility = models.ForeignKey(Facility, on_delete=models.CASCADE, null=True)
 
     def get_absolute_url(self):
         """Get url for user's detail view.
