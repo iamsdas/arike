@@ -298,12 +298,15 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_ADAPTER = "arike.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
-ACCOUNT_FORMS = {"signup": "arike.users.forms.UserSignupForm"}
+ACCOUNT_FORMS = {
+    "signup": "arike.users.forms.UserSignupForm",
+    "login": "arike.users.forms.UserLoginForm",
+}
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 SOCIALACCOUNT_ADAPTER = "arike.users.adapters.SocialAccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
 SOCIALACCOUNT_FORMS = {"signup": "arike.users.forms.UserSocialSignupForm"}
-
+ACCOUNT_SESSION_REMEMBER = False
 # django-rest-framework
 # -------------------------------------------------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/

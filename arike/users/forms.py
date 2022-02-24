@@ -1,4 +1,4 @@
-from allauth.account.forms import SignupForm
+from allauth.account.forms import SignupForm, LoginForm
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from django.contrib.auth import forms as admin_forms
 from django.contrib.auth import get_user_model
@@ -44,14 +44,12 @@ class UserSignupForm(SignupForm):
         super().__init__(*args, **kwargs)
         self.fields["name"].widget.attrs.update(
             {
-                "class": "",
                 "label": "Full Name",
                 "placeholder": "Full Name",
             }
         )
         self.fields["phone"].widget.attrs.update(
             {
-                "class": "",
                 "label": "Phone Number",
                 "placeholder": "Phone Number",
             }
@@ -64,3 +62,11 @@ class UserSocialSignupForm(SocialSignupForm):
     Default fields will be added automatically.
     See UserSignupForm otherwise.
     """
+
+
+class UserLoginForm(LoginForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["login"].label = ""
+        self.fields["password"].label = ""

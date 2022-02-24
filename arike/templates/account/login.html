@@ -36,10 +36,10 @@ ACCOUNT_ALLOW_REGISTRATION %}
     value="{{ redirect_field_value }}"
   />
   {% endif %}
-  <a class="font-semibold text-gray-600 mb-2" href="{% url 'account_reset_password' %}">
+  <a class="font-semibold text-gray-600" href="{% url 'account_reset_password' %}">
      Forgot Password?
   </a>
-  <button class="bg-gray-700 p-2 rounded-xl w-full text-white" type="submit">
+  <button class="bg-gray-700 p-2 rounded-xl w-full text-white mt-3" type="submit">
     Login
   </button>
 </form>
