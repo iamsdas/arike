@@ -337,3 +337,5 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+ACCOUNT_USER_DISPLAY = lambda user: str(user)

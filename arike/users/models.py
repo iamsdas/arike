@@ -27,6 +27,9 @@ class User(AbstractUser):
     is_verified = models.BooleanField(default=False, blank=True)
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE, null=True)
 
+    def __str__(self):
+        return self.name
+
     def get_absolute_url(self):
         """Get url for user's detail view.
 

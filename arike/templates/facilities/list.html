@@ -1,0 +1,6 @@
+{% extends "base_dashboard.html" %}
+{% block inner %}
+{% for facility in facilities %}
+    {{facility.name}}
+{% endfor %}
+{% endblock %}

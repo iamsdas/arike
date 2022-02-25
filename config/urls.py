@@ -18,6 +18,7 @@ urlpatterns = [
     path("users/", include("arike.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+    path("facility/", include("arike.facilities.urls", namespace="facility")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # API URLS
