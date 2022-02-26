@@ -10,12 +10,14 @@
     </div>
   </div>
   <div
-    class="overflow-y-auto w-full sm:w-1/2 py-4 px-5 flex flex-col justify-center"
+    class="overflow-y-scroll h-screen w-full sm:w-1/2 py-4 px-5 flex flex-col"
   >
-    <div class="text-4xl text-gray-700 font-semibold pb-3 text-center">
-      {% block title %} {% endblock title %}
+    <div class="my-auto">
+      <div class="text-4xl text-gray-700 font-semibold pb-3 text-center">
+        {% block title %} {% endblock title %}
+      </div>
+      <div class="">{% block inner %}{% endblock %}</div>
     </div>
-    <div class="">{% block inner %}{% endblock %}</div>
   </div>
 </div>
 {% endblock %}

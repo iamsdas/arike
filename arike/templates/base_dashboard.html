@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% load account %} {% block content %}
 <div class="flex h-screen">
   <div
     class="hidden sm:flex w-1/3 md:w-1/5 bg-white text-gray-700 flex-col justify-between p-2 text-left"
@@ -6,7 +6,7 @@
     <div>
       <div class="text-2xl font-bold pb-4">Arike</div>
       <div class="space-y-4 text-lg pl-2">
-        <a class="block hover:font-bold" href="{% url 'users:update' %}"
+        <a class="block hover:font-bold" href="{% url 'users:redirect' %}"
           >Profile</a
         >
         <a class="block hover:font-bold" href="/">Facility</a>
@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="border-t-2 p-2">
-      <div class="captalize text-xl">{{ request.user.username }}</div>
+      <div class="captalize text-xl">{% user_display user %}</div>
       <div>
         <a href="{% url 'account_logout' %}" class="text-md font-semibold"
           >logout</a
@@ -25,9 +25,21 @@
     </div>
   </div>
   <div
-    class="p-5 bg-gray-200 h-screen overflow-y-scroll flex flex-col justify-items-center grow"
+    class="p-5 bg-gray-200 h-screen overflow-y-auto flex flex-col justify-items-center grow"
   >
-    {% block inner %}{% endblock %}
+    {% if messages %} {% for message in messages %}
+    <div
+      class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}"
+    >
+      {{ message }}
+      <button
+        type="button"
+        class="btn-close bg-white"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    {% endfor %} {% endif %} {% block inner %}{% endblock %}
   </div>
 </div>
 {% endblock %}

@@ -32,6 +32,9 @@ class Ward(models.Model):
     number = models.IntegerField(unique=True)
     lsg_body = models.ForeignKey(LocalBody, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 
 class Facility(models.Model):
     kind = models.CharField(
@@ -42,3 +45,6 @@ class Facility(models.Model):
     pincode = models.IntegerField()
     phone = models.IntegerField()
     ward = models.ForeignKey(Ward, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name

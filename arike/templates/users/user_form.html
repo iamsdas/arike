@@ -1,11 +1,9 @@
 {% extends "base_dashboard.html" %}
 {% load crispy_forms_tags %}
-{% load account %}
-
 
 {% block inner %}
 <div class="w-full sm:w-2/3 mx-auto">
-  <div>{% user_display user %}</div>
+  <div class="font-semibold text-3xl text-gray-700 pb-4 text-center">Update User</div>
     <form class="form-horizontal" method="post" action="{% url 'users:update' %}">
       {% csrf_token %}
       {{ form|crispy }}
