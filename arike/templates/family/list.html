@@ -1,0 +1,20 @@
+{% extends "base_dashboard.html" %} {% block inner %}
+<div class="flex justify-between items-center pb-3">
+  <div class="font-extrabold text-4xl text-gray-700">Family Members</div>
+  <a
+    href="{% url 'patients:create' %}"
+    class="py-2 px-3 text-white bg-gray-700 rounded-xl text-lg"
+    >New</a
+  >
+</div>
+<div class="py-3">
+  <div class="text-gray-700 text-2xl font-bold">{{patient.full_name}}</div>
+  <div class="text-gray-500 text-lg">{{patient.address}}</div>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
+  {% for member in patients %}
+  <div class="p-4 bg-white rounded-xl text-gray-700">{{member.full_name}}</div>
+  {% endfor %}
+</div>
+{% endblock %}
