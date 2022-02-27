@@ -1,6 +1,31 @@
-{% extends "base_dashboard.html" %}
-{% block inner %}
-{% for facility in facilities %}
-    {{facility.name}}
-{% endfor %}
+{% extends "base_dashboard.html" %} {% block inner %}
+<div class="flex justify-between items-center pb-3">
+  <div class="font-extrabold text-3xl text-gray-700">Facility</div>
+  <a
+    href="{% url 'facilities:create' %}"
+    class="py-1 px-2 text-white bg-gray-700 rounded-xl text-lg"
+    >New</a
+  >
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
+  {% for facility in facilities %}
+  <div class="p-4 bg-white rounded-xl text-gray-700">
+    <div class="flex justify-between">
+      <div class="text-lg font-bold">{{facility.name}}</div>
+      <div class="text-xs p-2 bg-gray-300 rounded-2xl">{{facility.kind}}</div>
+    </div>
+    <div class="py-2">{{facility.address}}</div>
+    <div
+      class="border-t-2 border-gray-300 flex justify-between items-center pt-1"
+    >
+      <div class="font-semibold">+91 {{facility.phone}}</div>
+      <a
+        href="/facility/{{facility.id}}"
+        class="py-1 px-2 border-2 border-gray-700 rounded-lg block hover:text-gray-700"
+        >View</a
+      >
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}

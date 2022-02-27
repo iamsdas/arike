@@ -9,7 +9,9 @@
         <a class="block hover:font-bold" href="{% url 'users:redirect' %}"
           >Profile</a
         >
-        <a class="block hover:font-bold" href="/">Facility</a>
+        <a class="block hover:font-bold" href="{% url 'facilities:list' %}"
+          >Facility</a
+        >
         <a class="block hover:font-bold" href="/">Home</a>
         <a class="block hover:font-bold" href="/">Patients</a>
         <a class="block hover:font-bold" href="/">Schedule</a>
