@@ -1,12 +1,61 @@
 {% extends "base_dashboard.html" %} {% block inner %}
 <div class="flex justify-between items-center pb-3">
-  <div class="font-extrabold text-3xl text-gray-700">Facility</div>
+  <div class="font-extrabold text-4xl text-gray-700">Facility</div>
   <a
     href="{% url 'facilities:create' %}"
-    class="py-1 px-2 text-white bg-gray-700 rounded-xl text-lg"
+    class="py-2 px-3 text-white bg-gray-700 rounded-xl text-lg"
     >New</a
   >
 </div>
+<form action="" method="get" class="w-full">
+  <div class="flex justify-between items-center py-3">
+    <input
+      type="text"
+      name="search"
+      class="p-3 rounded-xl block"
+      placeholder="Search"
+      value="{{request.GET.search}}"
+    />
+    <div class="space-x-2">
+      <button
+        class="p-3 rounded-xl bg-white"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseExample"
+        aria-expanded="false"
+        aria-controls="collapseExample"
+      >
+        Filter
+      </button>
+      <select name="search" class="p-3 rounded-xl bg-white">
+        <option value="" selected disabled>Sort</option>
+      </select>
+      <button
+        type="submit"
+        class="px-4 py-3 rounded-3xl font-semibold uppercase border bg-white border-gray-700"
+      >
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+    </div>
+  </div>
+  <div class="collapse" id="collapseExample">
+    <div class="rounded-xl bg-white p-4 mb-3 space-x-2">
+      <div class="text-gray-700 font-bold text-lg pb-2 px-1">Filters</div>
+      <select
+        name="ward"
+        class="px-3 py-2 rounded-xl bg-white border-2 border-gray-700"
+      >
+        <option value="" selected disabled>Ward</option>
+      </select>
+      <select
+        name="type"
+        class="px-3 py-2 rounded-xl bg-white border-2 border-gray-700"
+      >
+        <option value="" selected disabled>Type</option>
+      </select>
+    </div>
+  </div>
+</form>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
   {% for facility in facilities %}
   <div class="p-4 bg-white rounded-xl text-gray-700">
@@ -16,7 +65,7 @@
     </div>
     <div class="py-2">{{facility.address}}</div>
     <div
-      class="border-t-2 border-gray-300 flex justify-between items-center pt-1"
+      class="border-t-2 border-gray-300 flex justify-between items-center pt-2"
     >
       <div class="font-semibold">+91 {{facility.phone}}</div>
       <a

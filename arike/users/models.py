@@ -7,9 +7,9 @@ from arike.facilities.models import Facility
 
 
 class UserRoles(models.TextChoices):
-    DISTRICT_ADMIN = "DA"
-    PRIMARY_NURSE = "PN"
-    SECONDARY_NURSE = "SN"
+    DISTRICT_ADMIN = "District Admin"
+    PRIMARY_NURSE = "Primary Nurse"
+    SECONDARY_NURSE = "Secondary Nurse"
 
 
 class User(AbstractUser):
@@ -21,7 +21,7 @@ class User(AbstractUser):
 
     name = models.CharField(_("Name of User"), blank=True, max_length=255)
     role = models.CharField(
-        max_length=2, choices=UserRoles.choices, default=UserRoles.DISTRICT_ADMIN
+        max_length=20, choices=UserRoles.choices, default=UserRoles.DISTRICT_ADMIN
     )
     phone = models.CharField(max_length=16, unique=True)
     is_verified = models.BooleanField(default=False, blank=True)

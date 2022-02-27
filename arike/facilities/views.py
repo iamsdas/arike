@@ -34,7 +34,11 @@ class GenericFacilityListVeiw(ListView, LoginRequiredMixin):
     context_object_name = "facilities"
 
     def get_queryset(self):
-        return Facility.objects.all()
+        facilities = Facility.objects.all()
+        search_filter = self.request.GET.get("search")
+        if search_filter is not None:
+            facilities = facilities.filter(name__icontains=search_filter)
+        return facilities
 
 
 class GenericFacilityDetailView(DetailView):

@@ -49,19 +49,7 @@
   <div
     class="p-5 bg-gray-200 h-screen overflow-y-auto flex flex-col justify-items-center grow"
   >
-    {% if messages %} {% for message in messages %}
-    <div
-      class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}"
-    >
-      {{ message }}
-      <button
-        type="button"
-        class="btn-close bg-white"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-      ></button>
-    </div>
-    {% endfor %} {% endif %} {% block inner %}{% endblock %}
+    {% block inner %}{% endblock %}
   </div>
 </div>
 {% endblock %}

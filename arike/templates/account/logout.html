@@ -3,9 +3,9 @@
 
 {% block inner %}
 
-<p class="text-xl py-2 text-center">{% translate 'Are you sure you want to sign out?' %}</p>
+<p class="text-xl py-2 text-center">{% translate 'Are you sure you want to log out?' %}</p>
 
-<form method="post" action="{% url 'account_logout' %}">
+<form method="post" action="{% url 'account_logout' %}" class="w-2/3 mx-auto">
   {% csrf_token %} {% if redirect_field_value %}
   <input
     type="hidden"
@@ -13,7 +13,7 @@
     value="{{ redirect_field_value }}"
   />
   {% endif %}
-  <button class="bg-red-700 p-2 rounded-xl w-full text-white mt-3" type="submit">
+  <button class="bg-gray-700 py-2 rounded-xl text-xl text-white mt-3 w-full" type="submit">
     Log Out
   </button>
 </form>
