@@ -35,7 +35,7 @@ class Symptoms(models.TextChoices):
 class Patient(models.Model):
     full_name = models.CharField(max_length=50)
     date_of_birth = models.DateField()
-    expired_time = models.DateField()
+    expired_time = models.DateField(null=True, blank=True)
     address = models.TextField()
     landmark = models.CharField(max_length=100)
     phone = models.IntegerField(unique=True)

@@ -23,7 +23,7 @@
         >
         <a
           class="block hover:font-bold rounded-xl p-2 px-3 {% if 'patient' in request.path %} bg-gray-700 text-white {% endif %}"
-          href="/"
+          href="{% url 'patients:list' %}"
           >Patients</a
         >
         <a
