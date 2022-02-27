@@ -1,27 +1,50 @@
 {% extends "base_dashboard.html" %} {% load static %} {% block inner %}
 
-<div class="w-full sm:w-2/3 mx-auto">
-  <h2>{{ object.username }}</h2>
-  <p>{{ object.name }}</p>
-  <p>{{ object.phone }}</p>
-  <p>{{ object.email }}</p>
-  <p>{{ object.facility }}</p>
-  <p>{{ object.role }}</p>
-
-  {% if object == request.user %}
-  <!-- Action buttons -->
-  <div class="row">
-    <div class="text-white">
-      <a
-        class="m-1 bg-gray-700 text-lg py-2 px-3 rounded-xl"
-        href="{% url 'users:update' %}"
-        role="button"
-        >Edit</a
-      >
-      <!-- Your Stuff: Custom user template urls -->
+<div class="w-full sm:w-4/5 mx-auto text-gray-700">
+  <div class="flex justify-between items-center pt-1 pb-4">
+    <div class="text-4xl font-bold">{{ object.name }}</div>
+    {% if object == request.user %}
+    <!-- Action buttons -->
+    <div class="row">
+      <div class="text-white">
+        <a
+          class="m-1 bg-gray-700 text-lg py-2 px-3 rounded-xl"
+          href="{% url 'users:update' %}"
+          role="button"
+          >Edit</a
+        >
+      </div>
+    </div>
+    <!-- End Action buttons -->
+    {% endif %}
+  </div>
+  <div class="text-2xl font-bold py-2">Profile</div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <div class="bg-white py-3 px-4 rounded-2xl">
+      <div class="text-gray-500">Phone Number</div>
+      <div class="font-semibold">{{ object.phone }}</div>
+    </div>
+    <div class="bg-white py-3 px-4 rounded-2xl">
+      <div class="text-gray-500">Email</div>
+      <div class="font-semibold">{{ object.email }}</div>
+    </div>
+    <div class="bg-white py-3 px-4 rounded-2xl">
+      <div class="text-gray-500">Username</div>
+      <div class="font-semibold">{{ object.username }}</div>
     </div>
   </div>
-  <!-- End Action buttons -->
-  {% endif %}
+  <div class="text-2xl font-bold py-2 pt-4">Facilities</div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <div class="bg-white py-3 px-4 rounded-2xl">
+      <div class="text-gray-500">Assigned Facility</div>
+      <div class="font-semibold">{{ object.facility }}</div>
+    </div>
+  </div>
+  <div class="text-2xl font-bold py-2 pt-4">Role</div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <div class="bg-white py-3 px-4 rounded-2xl">
+      <div class="font-semibold">{{ object.role }}</div>
+    </div>
+  </div>
 </div>
 {% endblock inner %}
