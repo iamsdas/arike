@@ -47,7 +47,11 @@
     >
   </div>
   <div class="bg-white rounded-xl p-3 flex justify-center items-center">
-    <a href="" class="font-semibold text-xl">Disease History</a>
+    <a
+      href="{% url 'patients:disease' object.id%}"
+      class="font-semibold text-xl"
+      >Disease History</a
+    >
   </div>
 </div>
 

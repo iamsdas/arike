@@ -1,6 +1,10 @@
 from django.urls import path
 
 from arike.patients.views import (
+    DiseaseCreateView,
+    DiseaseDeleteView,
+    DiseaseListVeiw,
+    DiseaseUpdateView,
     FamilyListVeiw,
     MemberCreateView,
     MemberUpdateView,
@@ -20,5 +24,9 @@ urlpatterns = [
     path("<pk>/family/add/", view=MemberCreateView.as_view(), name="family_add"),
     path("<pk>/family/<id>/", view=MemberUpdateView.as_view(), name="family_update"),
     path("<pk>/family/del/<id>/", view=MemberDeleteView.as_view(), name="family_del"),
+    path("<pk>/disease/", view=DiseaseListVeiw.as_view(), name="disease"),
+    path("<pk>/disease/add/", view=DiseaseCreateView.as_view(), name="disease_add"),
+    path("<pk>/disease/<id>/", view=DiseaseUpdateView.as_view(), name="disease_update"),
+    path("<pk>/disease/del/<id>/", view=DiseaseDeleteView.as_view(), name="dis_del"),
     path("<pk>/", view=PatientDetailView.as_view(), name="details"),
 ]

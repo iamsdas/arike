@@ -1,10 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpRequest, HttpResponseRedirect
+from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.urls import reverse_lazy
-from arike.patients.forms import FamilyMemberForm, PatientForm
-from arike.patients.models import FamilyMember, Patient
+
+from arike.patients.forms import DiseaseHistoryForm, FamilyMemberForm, PatientForm
+from arike.patients.models import FamilyMember, Patient, PatientDisease
 
 
 class GenericPatientFormView(LoginRequiredMixin):
@@ -14,6 +16,18 @@ class GenericPatientFormView(LoginRequiredMixin):
 
     def get_queryset(self):
         return Patient.objects.all()
+
+
+class PatientCreateView(GenericPatientFormView, CreateView):
+    pass
+
+
+class PatientUpdateView(GenericPatientFormView, UpdateView):
+    pass
+
+
+class PatientDeleteView(GenericPatientFormView, DeleteView):
+    pass
 
 
 class GenericFamilyMemberFormView(LoginRequiredMixin):
@@ -30,18 +44,6 @@ class GenericFamilyMemberFormView(LoginRequiredMixin):
         return reverse_lazy("patients:family", kwargs={"pk": self.kwargs["pk"]})
 
 
-class PatientCreateView(GenericPatientFormView, CreateView):
-    pass
-
-
-class PatientUpdateView(GenericPatientFormView, UpdateView):
-    pass
-
-
-class PatientDeleteView(GenericPatientFormView, DeleteView):
-    pass
-
-
 class MemberCreateView(GenericFamilyMemberFormView, CreateView):
     pass
 
@@ -51,6 +53,37 @@ class MemberUpdateView(GenericFamilyMemberFormView, UpdateView):
 
 
 class MemberDeleteView(GenericFamilyMemberFormView, DeleteView):
+    pass
+
+
+class GenericDiseaseFormView(LoginRequiredMixin):
+    form_class = DiseaseHistoryForm
+    template_name = "disease/form.html"
+    slug_field = "id"
+    slug_url_kwarg = "id"
+
+    def get_queryset(self):
+        patient_pk = self.kwargs["pk"]
+        return PatientDisease.objects.filter(patient__pk=patient_pk)
+
+    def get_success_url(self):
+        return reverse_lazy("patients:disease", kwargs={"pk": self.kwargs["pk"]})
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.patient = Patient.objects.get(pk=self.kwargs["pk"])
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class DiseaseCreateView(GenericDiseaseFormView, CreateView):
+    pass
+
+
+class DiseaseUpdateView(GenericDiseaseFormView, UpdateView):
+    pass
+
+
+class DiseaseDeleteView(GenericDiseaseFormView, DeleteView):
     pass
 
 
@@ -78,6 +111,21 @@ class FamilyListVeiw(ListView, LoginRequiredMixin):
         if search_filter is not None:
             family_members = family_members.filter(full_name__icontains=search_filter)
         return family_members
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["patient"] = Patient.objects.get(pk=self.kwargs["pk"])
+        return ctx
+
+
+class DiseaseListVeiw(ListView, LoginRequiredMixin):
+    model = PatientDisease
+    template_name = "disease/list.html"
+    context_object_name = "diseases"
+
+    def get_queryset(self):
+        diseases = PatientDisease.objects.filter(patient__pk=self.kwargs["pk"])
+        return diseases
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
