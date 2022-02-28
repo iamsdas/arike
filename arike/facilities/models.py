@@ -26,6 +26,9 @@ class LocalBody(models.Model):
     lsg_body_code = models.CharField(max_length=20)
     district = models.ForeignKey(District, on_delete=models.PROTECT)
 
+    def __str__(self):
+        return self.name
+
 
 class Ward(models.Model):
     name = models.CharField(max_length=30)

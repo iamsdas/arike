@@ -76,7 +76,8 @@ class PatientDisease(models.Model):
 
 
 class VisitSchedule(models.Model):
-    datetime = models.DateTimeField(default=datetime.now())
+    date = models.DateField(null=True)
+    time = models.TimeField(null=True)
     duration = models.IntegerField()
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     nurse = models.ForeignKey(User, on_delete=models.CASCADE)
