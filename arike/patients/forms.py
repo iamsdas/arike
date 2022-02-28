@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from arike.patients.models import FamilyMember, Patient, PatientDisease
+from arike.patients.models import FamilyMember, Patient, PatientDisease, Treatment
 
 
 class PatientForm(ModelForm):
@@ -40,3 +40,9 @@ class DiseaseHistoryForm(ModelForm):
     class Meta:
         model = PatientDisease
         fields = ["disease", "note"]
+
+
+class TreatmentForm(ModelForm):
+    class Meta:
+        model = Treatment
+        fields = ["care_type", "care_sub_type", "description"]

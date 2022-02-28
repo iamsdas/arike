@@ -14,19 +14,14 @@
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
   {% for disease in diseases %}
-  <div
-    class="p-4 bg-white rounded-xl text-gray-700 grid grid-cols-2 gap-3 text-gray-700"
-  >
-    <div class="flex justify-between items-center col-span-2">
-      <div class="font-bold text-lg capitalize">{{disease.name}}</div>
-      <div class="font-semibold text-gray-500">{{disease.note}}</div>
-    </div>
-    <div class="col-span-2 text-gray-500">{{disease.address}}</div>
+  <div class="p-4 bg-white rounded-xl text-gray-700 text-gray-700">
+    <div class="font-bold text-lg capitalize">{{disease.disease}}</div>
+    <div class="font-semibold text-gray-500">{{disease.note}}</div>
     <!-- <div>
       <div class="font-semibold">Phone Number</div>
       <div>{{disease.phone}}</div>
     </div> -->
-    <div class="col-span-2 space-x-2">
+    <div class="py-3 space-x-2">
       <a
         href="{% url 'patients:disease_update' patient.id disease.id %}"
         class="py-2 px-3 text-white bg-gray-700 rounded-xl text-lg"

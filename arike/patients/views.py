@@ -5,8 +5,13 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from arike.patients.forms import DiseaseHistoryForm, FamilyMemberForm, PatientForm
-from arike.patients.models import FamilyMember, Patient, PatientDisease
+from arike.patients.forms import (
+    DiseaseHistoryForm,
+    FamilyMemberForm,
+    PatientForm,
+    TreatmentForm,
+)
+from arike.patients.models import FamilyMember, Patient, PatientDisease, Treatment
 
 
 class GenericPatientFormView(LoginRequiredMixin):
@@ -72,6 +77,7 @@ class GenericDiseaseFormView(LoginRequiredMixin):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.patient = Patient.objects.get(pk=self.kwargs["pk"])
+        self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -84,6 +90,38 @@ class DiseaseUpdateView(GenericDiseaseFormView, UpdateView):
 
 
 class DiseaseDeleteView(GenericDiseaseFormView, DeleteView):
+    pass
+
+
+class GenericTreatmentFormView(LoginRequiredMixin):
+    form_class = TreatmentForm
+    template_name = "treatment/form.html"
+    slug_field = "id"
+    slug_url_kwarg = "id"
+
+    def get_queryset(self):
+        patient_pk = self.kwargs["pk"]
+        return Treatment.objects.filter(patient__pk=patient_pk)
+
+    def get_success_url(self):
+        return reverse_lazy("patients:treatments", kwargs={"pk": self.kwargs["pk"]})
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.patient = Patient.objects.get(pk=self.kwargs["pk"])
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class TreatmentCreateView(GenericTreatmentFormView, CreateView):
+    pass
+
+
+class TreatmentUpdateView(GenericTreatmentFormView, UpdateView):
+    pass
+
+
+class TreatmentDeleteView(GenericTreatmentFormView, DeleteView):
     pass
 
 
@@ -126,6 +164,21 @@ class DiseaseListVeiw(ListView, LoginRequiredMixin):
     def get_queryset(self):
         diseases = PatientDisease.objects.filter(patient__pk=self.kwargs["pk"])
         return diseases
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["patient"] = Patient.objects.get(pk=self.kwargs["pk"])
+        return ctx
+
+
+class TreatmentsListVeiw(ListView, LoginRequiredMixin):
+    model = Treatment
+    template_name = "treatment/list.html"
+    context_object_name = "treatments"
+
+    def get_queryset(self):
+        treatments = Treatment.objects.filter(patient__pk=self.kwargs["pk"])
+        return treatments
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
