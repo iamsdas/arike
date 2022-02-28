@@ -34,26 +34,28 @@
     </div>
   </div>
   <div class="bg-white rounded-xl p-3 flex justify-center items-center">
-    <a href="" class="font-semibold text-xl">Visits</a>
+    <a href="" class="font-semibold text-xl hover:text-gray-700 hover:text-2xl"
+      >Visits</a
+    >
   </div>
   <div class="bg-white rounded-xl p-3 flex justify-center items-center">
     <a
       href="{% url 'patients:treatments' object.id%}"
-      class="font-semibold text-xl"
+      class="font-semibold text-xl hover:text-gray-700 hover:text-2xl"
       >Treatments</a
     >
   </div>
   <div class="bg-white rounded-xl p-3 flex justify-center items-center">
     <a
       href="{% url 'patients:family' object.id %}"
-      class="font-semibold text-xl"
+      class="font-semibold text-xl hover:text-gray-700 hover:text-2xl"
       >Family Details</a
     >
   </div>
   <div class="bg-white rounded-xl p-3 flex justify-center items-center">
     <a
       href="{% url 'patients:disease' object.id%}"
-      class="font-semibold text-xl"
+      class="font-semibold text-xl hover:text-gray-700 hover:text-2xl"
       >Disease History</a
     >
   </div>

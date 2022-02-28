@@ -8,26 +8,26 @@
       <div class="space-y-4 text-lg px-3">
         <a
           href="{% url 'users:redirect' %}"
-          class="block hover:font-bold rounded-xl py-2 px-3 {% if 'user' in request.path %} bg-gray-700 text-white {% endif %}"
+          class="block hover:text-gray-700 hover:font-bold rounded-xl py-2 px-3 {% if 'user' in request.path %} bg-gray-700 text-white {% endif %}"
           >Profile</a
         >
         <a
-          class="block hover:font-bold rounded-xl p-2 px-3 {% if 'facility' in request.path %} bg-gray-700 text-white {% endif %}"
+          class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if 'facility' in request.path %} bg-gray-700 text-white {% endif %}"
           href="{% url 'facilities:list' %}"
           >Facility</a
         >
         <a
-          class="block hover:font-bold rounded-xl p-2 px-3 {% if 'home' in request.path %} bg-gray-700 text-white {% endif %}"
+          class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if 'home' in request.path %} bg-gray-700 text-white {% endif %}"
           href="/"
           >Home</a
         >
         <a
-          class="block hover:font-bold rounded-xl p-2 px-3 {% if 'patient' in request.path %} bg-gray-700 text-white {% endif %}"
+          class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if 'patient' in request.path %} bg-gray-700 text-white {% endif %}"
           href="{% url 'patients:list' %}"
           >Patients</a
         >
         <a
-          class="block hover:font-bold rounded-xl p-2 px-3 {% if 'schedule' in request.path %} bg-gray-700 text-white {% endif %}"
+          class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if 'schedule' in request.path %} bg-gray-700 text-white {% endif %}"
           href="/"
           >Schedule</a
         >
