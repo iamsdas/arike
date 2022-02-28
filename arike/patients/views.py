@@ -12,6 +12,7 @@ from arike.patients.forms import (
     TreatmentForm,
 )
 from arike.patients.models import FamilyMember, Patient, PatientDisease, Treatment
+from arike.facilities.models import Ward
 
 
 class GenericPatientFormView(LoginRequiredMixin):
@@ -133,9 +134,20 @@ class PatientListVeiw(ListView, LoginRequiredMixin):
     def get_queryset(self):
         patients = Patient.objects.all()
         search_filter = self.request.GET.get("search")
+        ward_filter = self.request.GET.get("ward")
+        type_filter = self.request.GET.get("type")
         if search_filter is not None:
             patients = patients.filter(full_name__icontains=search_filter)
+        if ward_filter is not None:
+            patients = patients.filter(facility__ward__name=ward_filter)
+        if type_filter is not None:
+            patients = patients.filter(facility__kind=type_filter)
         return patients
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["wards"] = list(Ward.objects.values_list("name", flat=True))
+        return ctx
 
 
 class FamilyListVeiw(ListView, LoginRequiredMixin):

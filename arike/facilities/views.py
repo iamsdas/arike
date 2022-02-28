@@ -4,7 +4,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from arike.facilities.forms import FacilityCreationForm
-from arike.facilities.models import Facility
+from arike.facilities.models import Facility, Ward
 
 
 class GenericFacilityFormView(LoginRequiredMixin):
@@ -36,9 +36,21 @@ class GenericFacilityListVeiw(ListView, LoginRequiredMixin):
     def get_queryset(self):
         facilities = Facility.objects.all()
         search_filter = self.request.GET.get("search")
+        ward_filter = self.request.GET.get("ward")
+        type_filter = self.request.GET.get("type")
+
+        if ward_filter is not None:
+            facilities = facilities.filter(ward__name=ward_filter)
+        if type_filter is not None:
+            facilities = facilities.filter(kind=type_filter)
         if search_filter is not None:
             facilities = facilities.filter(name__icontains=search_filter)
         return facilities
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["wards"] = list(Ward.objects.values_list("name", flat=True))
+        return ctx
 
 
 class GenericFacilityDetailView(DetailView):
