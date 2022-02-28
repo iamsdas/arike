@@ -43,6 +43,9 @@ class Patient(models.Model):
     gender = models.CharField(max_length=1, choices=GenderChoice.choices)
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.full_name
+
 
 class FamilyMember(models.Model):
     full_name = models.CharField(max_length=50)
@@ -61,6 +64,9 @@ class FamilyMember(models.Model):
 class Disease(models.Model):
     name = models.CharField(max_length=20)
     icds_code = models.CharField(max_length=10, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class PatientDisease(models.Model):

@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-
+from django.urls import reverse_lazy
 from arike.patients.forms import FamilyMemberForm, PatientForm
 from arike.patients.models import FamilyMember, Patient
 
@@ -19,11 +19,15 @@ class GenericPatientFormView(LoginRequiredMixin):
 class GenericFamilyMemberFormView(LoginRequiredMixin):
     form_class = FamilyMemberForm
     template_name = "family/form.html"
-    success_url = "/family/list/"
+    slug_field = "id"
+    slug_url_kwarg = "id"
 
     def get_queryset(self):
         patient_pk = self.kwargs["pk"]
         return FamilyMember.objects.filter(patient__pk=patient_pk)
+
+    def get_success_url(self):
+        return reverse_lazy("patients:family", kwargs={"pk": self.kwargs["pk"]})
 
 
 class PatientCreateView(GenericPatientFormView, CreateView):
@@ -66,7 +70,7 @@ class PatientListVeiw(ListView, LoginRequiredMixin):
 class FamilyListVeiw(ListView, LoginRequiredMixin):
     model = FamilyMember
     template_name = "family/list.html"
-    context_object_name = "patients"
+    context_object_name = "members"
 
     def get_queryset(self):
         family_members = FamilyMember.objects.all()

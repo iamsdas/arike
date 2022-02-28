@@ -3,7 +3,7 @@
 {% block inner %}
 <div class="w-full md:w-2/3 mx-auto">
   <div class="text-4xl text-gray-700 font-semibold text-center">
-    {% block title %} Create Patient {% endblock title %}
+    {% block title %} Add Patient {% endblock title %}
   </div>
   <form method="post" action="">
     {% csrf_token %} {{ form|crispy }} {% if redirect_field_value %}

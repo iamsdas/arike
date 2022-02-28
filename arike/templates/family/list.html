@@ -2,7 +2,7 @@
 <div class="flex justify-between items-center pb-3">
   <div class="font-extrabold text-4xl text-gray-700">Family Members</div>
   <a
-    href="{% url 'patients:create' %}"
+    href="{% url 'patients:family_add' patient.id %}"
     class="py-2 px-3 text-white bg-gray-700 rounded-xl text-lg"
     >New</a
   >
@@ -13,8 +13,52 @@
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
-  {% for member in patients %}
-  <div class="p-4 bg-white rounded-xl text-gray-700">{{member.full_name}}</div>
+  {% for member in members %}
+  <div
+    class="p-4 bg-white rounded-xl text-gray-700 grid grid-cols-2 gap-3 text-gray-700"
+  >
+    <div class="flex justify-between items-center col-span-2">
+      <div class="font-bold text-lg capitalize">{{member.full_name}}</div>
+      <div class="font-semibold text-gray-500">{{member.relation}}</div>
+    </div>
+    <div class="col-span-2 text-gray-500">{{member.address}}</div>
+    <div>
+      <div class="font-semibold">Phone Number</div>
+      <div>{{member.phone}}</div>
+    </div>
+    <div>
+      <div class="font-semibold">Email</div>
+      <div>{{member.email}}</div>
+    </div>
+    <div>
+      <div class="font-semibold">Birth Date</div>
+      <div>{{member.date_of_birth}}</div>
+    </div>
+    <div>
+      <div class="font-semibold">Occupation</div>
+      <div>{{member.occupation}}</div>
+    </div>
+    <div>
+      <div class="font-semibold">Education</div>
+      <div>{{member.education}}</div>
+    </div>
+    <div>
+      <div class="font-semibold">Remarks</div>
+      <div>{{member.remarks}}</div>
+    </div>
+    <div class="col-span-2 space-x-2">
+      <a
+        href="{% url 'patients:family_update' patient.id member.id %}"
+        class="py-2 px-3 text-white bg-gray-700 rounded-xl text-lg"
+        >Edit</a
+      >
+      <a
+        href="{% url 'patients:family_del' patient.id member.id %}"
+        class="py-1 px-2 border-4 border-gray-700 font-semibold rounded-xl text-lg"
+        >Delete</a
+      >
+    </div>
+  </div>
   {% endfor %}
 </div>
 {% endblock %}
