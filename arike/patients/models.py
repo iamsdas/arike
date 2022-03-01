@@ -9,16 +9,16 @@ User = get_user_model()
 
 
 class GenderChoice(models.TextChoices):
-    MALE = "M"
-    FEMALE = "F"
-    OTHER = "O"
+    MALE = "Male"
+    FEMALE = "Female"
+    OTHER = "Other"
 
 
 class FamilyRelation(models.TextChoices):
-    SISTER = "S"
-    BROTHER = "B"
-    FATHER = "F"
-    MOTHER = "M"
+    SISTER = "Sister"
+    BROTHER = "Brother"
+    FATHER = "Father"
+    MOTHER = "Mother"
 
 
 class Patient(models.Model):
@@ -29,7 +29,7 @@ class Patient(models.Model):
     landmark = models.CharField(max_length=100)
     phone = models.IntegerField(unique=True)
     emergency_phone_number = models.IntegerField(unique=True)
-    gender = models.CharField(max_length=1, choices=GenderChoice.choices)
+    gender = models.CharField(max_length=20, choices=GenderChoice.choices)
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -41,7 +41,7 @@ class FamilyMember(models.Model):
     phone = models.IntegerField(unique=True)
     date_of_birth = models.DateField()
     email = models.CharField(max_length=50)
-    relation = models.CharField(max_length=1, choices=FamilyRelation.choices)
+    relation = models.CharField(max_length=20, choices=FamilyRelation.choices)
     address = models.TextField()
     education = models.CharField(max_length=20)
     occupation = models.CharField(max_length=10)
