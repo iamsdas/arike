@@ -1,0 +1,44 @@
+{% extends "base_dashboard.html" %} {% block inner %}
+<div class="w-4/5 mx-auto">
+  <div class="font-extrabold text-4xl text-gray-700 pb-3">Visit Details</div>
+  <div class="py-3">
+    <div class="text-gray-700 text-2xl font-bold">{{patient.full_name}}</div>
+    <div class="text-gray-500 text-lg">{{patient.address}}</div>
+  </div>
+  <div class="font-semibold text-2xl text-gray-700 pb-3">
+    Health Information
+  </div>
+  <div
+    class="grid grid-cols-1 sm:grid-cols-3 gap-2 font-gray-700 bg-white p-4 rounded-xl text-lg"
+  >
+    <div>
+      <div class="font-semibold">Blood Pressure</div>
+      <div class="text-gray-500">{{object.blood_pressure}}</div>
+    </div>
+    <div>
+      <div class="font-semibold">Pulse</div>
+      <div class="text-gray-500">{{object.pulse}}</div>
+    </div>
+    <div>
+      <div class="font-semibold">Sugar</div>
+      <div class="text-gray-500">{{object.sugar}}</div>
+    </div>
+    <div>
+      <div class="font-semibold">Mouth Hygiene</div>
+      <div class="text-gray-500">{{object.mouth_hygiene}}</div>
+    </div>
+    <div>
+      <div class="font-semibold">Symptoms</div>
+      <div class="text-gray-500">{{object.symptoms}}</div>
+    </div>
+    <div>
+      <div class="font-semibold">Public Hygiene</div>
+      <div class="text-gray-500">{{object.public_hygiene}}</div>
+    </div>
+  </div>
+  <div class="font-semibold text-2xl text-gray-700 py-3">Notes</div>
+  <div class="w-full rounded-xl bg-white text-gray-700 p-4">
+    {{object.note}}
+  </div>
+</div>
+{% endblock %}

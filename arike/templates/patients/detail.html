@@ -34,7 +34,9 @@
     </div>
   </div>
   <div class="bg-white rounded-xl p-3 flex justify-center items-center">
-    <a href="" class="font-semibold text-xl hover:text-gray-700 hover:text-2xl"
+    <a
+      href="{% url 'patients:visits' object.id%}"
+      class="font-semibold text-xl hover:text-gray-700 hover:text-2xl"
       >Visits</a
     >
   </div>

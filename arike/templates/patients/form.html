@@ -19,7 +19,7 @@
     />
     {% endif %}
     <button class="bg-gray-700 p-3 rounded-xl w-full text-white" type="submit">
-      {% if 'add' in request.path %} Create {% endif %}
+      {% if 'create' in request.path %} Create {% endif %}
       {% if 'del' in request.path %} Delete {% endif %}
       {% if 'update' in request.path %} Update {% endif %}
     </button>

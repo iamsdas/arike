@@ -7,16 +7,18 @@ from arike.patients.views import (
     DiseaseUpdateView,
     FamilyListVeiw,
     MemberCreateView,
-    MemberUpdateView,
     MemberDeleteView,
+    MemberUpdateView,
     PatientCreateView,
     PatientDetailView,
     PatientListVeiw,
     PatientUpdateView,
     TreatmentCreateView,
     TreatmentDeleteView,
-    TreatmentUpdateView,
     TreatmentsListVeiw,
+    TreatmentUpdateView,
+    VisitDetailsDetailView,
+    VisitListVeiw,
 )
 
 app_name = "patients"
@@ -30,12 +32,16 @@ urlpatterns = [
     path("<pk>/family/del/<id>/", view=MemberDeleteView.as_view(), name="family_del"),
     path("<pk>/disease/", view=DiseaseListVeiw.as_view(), name="disease"),
     path("<pk>/disease/add/", view=DiseaseCreateView.as_view(), name="disease_add"),
-    path("<pk>/disease/<id>/", view=DiseaseUpdateView.as_view(), name="disease_update"),
+    path(
+        "<pk>/disease/update/<id>/",
+        view=DiseaseUpdateView.as_view(),
+        name="disease_update",
+    ),
     path("<pk>/disease/del/<id>/", view=DiseaseDeleteView.as_view(), name="dis_del"),
     path("<pk>/treatment/", view=TreatmentsListVeiw.as_view(), name="treatments"),
     path("<pk>/treatment/add/", view=TreatmentCreateView.as_view(), name="trtmnt_add"),
     path(
-        "<pk>/treatment/<id>/",
+        "<pk>/treatment/update/<id>/",
         view=TreatmentUpdateView.as_view(),
         name="trtmnt_update",
     ),
@@ -45,4 +51,10 @@ urlpatterns = [
         name="trtmnt_del",
     ),
     path("<pk>/", view=PatientDetailView.as_view(), name="details"),
+    path("<pk>/history/", view=VisitListVeiw.as_view(), name="visits"),
+    path(
+        "<pk>/history/<id>/",
+        view=VisitDetailsDetailView.as_view(),
+        name="visit_details",
+    ),
 ]

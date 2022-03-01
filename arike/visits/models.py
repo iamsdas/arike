@@ -24,6 +24,9 @@ class VisitSchedule(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     nurse = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.date} at {self.time}"
+
 
 class VisitDetails(models.Model):
     blood_pressure = models.IntegerField()

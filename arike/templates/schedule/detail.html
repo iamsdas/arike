@@ -10,7 +10,9 @@
     <div
       class="py-14 w-1/2 bg-white rounded-xl flex justify-center items-center"
     >
-      <a href="" class="hover:text-gray-700 hover:font-bold"
+      <a
+        href="{% url 'visits:visit' object.id %}"
+        class="hover:text-gray-700 hover:font-bold"
         >Health Information</a
       >
     </div>

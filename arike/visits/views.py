@@ -8,8 +8,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from arike.facilities.models import Ward
-from arike.visits.forms import VisitScheduleForm
-from arike.visits.models import VisitSchedule
+from arike.visits.forms import VisitDetailsForm, VisitScheduleForm
+from arike.visits.models import VisitDetails, VisitSchedule
 
 
 class GenericScheduleFormView(LoginRequiredMixin):
@@ -64,3 +64,24 @@ class ScheduleListVeiw(LoginRequiredMixin, ListView):
         ctx = super().get_context_data(**kwargs)
         ctx["wards"] = list(Ward.objects.values_list("name", flat=True))
         return ctx
+
+
+class GenericVisitDetailsFormView(LoginRequiredMixin):
+    form_class = VisitDetailsForm
+    template_name = "schedule/form.html"
+
+    def get_queryset(self):
+        return VisitDetails.objects.all()
+
+    def get_success_url(self):
+        return reverse_lazy("visits:view", kwargs={"pk": self.kwargs["pk"]})
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.schedule = VisitSchedule.objects.get(pk=self.kwargs["pk"])
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class VisitDetailsCreateView(GenericVisitDetailsFormView, CreateView):
+    pass

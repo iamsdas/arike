@@ -13,6 +13,7 @@ from arike.patients.forms import (
 )
 from arike.patients.models import FamilyMember, Patient, PatientDisease, Treatment
 from arike.facilities.models import Ward
+from arike.visits.models import VisitDetails
 
 
 class GenericPatientFormView(LoginRequiredMixin):
@@ -168,6 +169,20 @@ class FamilyListVeiw(LoginRequiredMixin, ListView):
         return ctx
 
 
+class VisitListVeiw(LoginRequiredMixin, ListView):
+    model = VisitDetails
+    template_name = "visit_details/list.html"
+    context_object_name = "visits"
+
+    def get_queryset(self):
+        return VisitDetails.objects.filter(schedule__patient__pk=self.kwargs["pk"])
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["patient"] = Patient.objects.get(pk=self.kwargs["pk"])
+        return ctx
+
+
 class DiseaseListVeiw(LoginRequiredMixin, ListView):
     model = PatientDisease
     template_name = "disease/list.html"
@@ -201,3 +216,15 @@ class TreatmentsListVeiw(LoginRequiredMixin, ListView):
 class PatientDetailView(LoginRequiredMixin, DetailView):
     model = Patient
     template_name = "patients/detail.html"
+
+
+class VisitDetailsDetailView(LoginRequiredMixin, DetailView):
+    model = VisitDetails
+    template_name = "visit_details/details.html"
+    slug_field = "id"
+    slug_url_kwarg = "id"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["patient"] = Patient.objects.get(pk=self.kwargs["pk"])
+        return ctx
