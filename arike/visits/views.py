@@ -1,0 +1,66 @@
+from re import template
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
+from datetime import datetime
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+
+from arike.facilities.models import Ward
+from arike.visits.forms import VisitScheduleForm
+from arike.visits.models import VisitSchedule
+
+
+class GenericScheduleFormView(LoginRequiredMixin):
+    form_class = VisitScheduleForm
+    template_name = "schedule/form.html"
+
+    def get_queryset(self):
+        return VisitSchedule.objects.filter(nurse=self.request.user)
+
+    def get_success_url(self):
+        return reverse_lazy("visits:list")
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.nurse = self.request.user
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class ScheduleCreateView(GenericScheduleFormView, CreateView):
+    pass
+
+
+class ScheduleUpdateView(GenericScheduleFormView, UpdateView):
+    pass
+
+
+class ScheduleDeleteView(GenericScheduleFormView, DeleteView):
+    pass
+
+
+class ScheduleDetailView(LoginRequiredMixin, DetailView):
+    model = VisitSchedule
+    template_name = "schedule/detail.html"
+
+
+class ScheduleListVeiw(LoginRequiredMixin, ListView):
+    model = VisitSchedule
+    template_name = "schedule/list.html"
+    context_object_name = "visits"
+
+    def get_queryset(self):
+        return (
+            VisitSchedule.objects.filter(
+                nurse=self.request.user, date__gte=datetime.now().date()
+            )
+            .order_by("date")
+            .order_by("time")
+        )
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["wards"] = list(Ward.objects.values_list("name", flat=True))
+        return ctx

@@ -20,6 +20,7 @@ urlpatterns = [
     # Your stuff: custom urls includes go here
     path("facility/", include("arike.facilities.urls", namespace="facility")),
     path("patient/", include("arike.patients.urls", namespace="patient")),
+    path("visit/", include("arike.visits.urls", namespace="visits")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # API URLS

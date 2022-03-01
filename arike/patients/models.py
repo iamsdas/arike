@@ -21,17 +21,6 @@ class FamilyRelation(models.TextChoices):
     MOTHER = "M"
 
 
-class Hygiene(models.TextChoices):
-    GOOD = "good"
-    POOR = "poor"
-    OK = "ok"
-
-
-class Symptoms(models.TextChoices):
-    FEVER = "fever"
-    CAUGHING = "caughing"
-
-
 class Patient(models.Model):
     full_name = models.CharField(max_length=50)
     date_of_birth = models.DateField()
@@ -73,28 +62,6 @@ class PatientDisease(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     disease = models.ForeignKey(Disease, on_delete=models.CASCADE)
     note = models.TextField()
-
-
-class VisitSchedule(models.Model):
-    date = models.DateField(null=True)
-    time = models.TimeField(null=True)
-    duration = models.IntegerField()
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    nurse = models.ForeignKey(User, on_delete=models.CASCADE)
-
-
-class VisitDetails(models.Model):
-    blood_pressure = models.IntegerField()
-    pulse = models.IntegerField()
-    sugar = models.FloatField()
-    mouth_hygiene = models.CharField(max_length=4, choices=Hygiene.choices)
-    public_hygiene = models.CharField(max_length=4, choices=Hygiene.choices)
-    systemic_examination = models.TextField()
-    patient_at_peace = models.BooleanField()
-    pain = models.BooleanField()
-    symptoms = models.CharField(max_length=20, choices=Symptoms.choices)
-    note = models.TextField()
-    schedule = models.OneToOneField(VisitSchedule, on_delete=models.CASCADE)
 
 
 class Treatment(models.Model):

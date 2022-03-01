@@ -27,8 +27,8 @@
           >Patients</a
         >
         <a
-          class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if 'schedule' in request.path %} bg-gray-700 text-white {% endif %}"
-          href="/"
+          class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if 'visit' in request.path %} bg-gray-700 text-white {% endif %}"
+          href="{% url 'visits:list' %}"
           >Schedule</a
         >
       </div>
