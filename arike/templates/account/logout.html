@@ -1,20 +1,24 @@
-{% extends "account/base.html" %} {% load i18n %}
-{% block title %}Sign Out {% endblock %}
+{% extends "base_dashboard.html" %} {% load i18n %} {% block inner %}
 
-{% block inner %}
+<div class="mx-auto my-auto">
+  <p class="text-xl py-2 text-center">
+    {% translate 'Are you sure you want to sign out?' %}
+  </p>
 
-<p class="text-xl py-2 text-center">{% translate 'Are you sure you want to log out?' %}</p>
-
-<form method="post" action="{% url 'account_logout' %}" class="w-2/3 mx-auto">
-  {% csrf_token %} {% if redirect_field_value %}
-  <input
-    type="hidden"
-    name="{{ redirect_field_name }}"
-    value="{{ redirect_field_value }}"
-  />
-  {% endif %}
-  <button class="bg-gray-700 py-2 rounded-xl text-xl text-white mt-3 w-full" type="submit">
-    Log Out
-  </button>
-</form>
+  <form method="post" action="{% url 'account_logout' %}" class="">
+    {% csrf_token %} {% if redirect_field_value %}
+    <input
+      type="hidden"
+      name="{{ redirect_field_name }}"
+      value="{{ redirect_field_value }}"
+    />
+    {% endif %}
+    <button
+      class="bg-gray-700 py-2 rounded-xl text-xl text-white mt-3 w-full"
+      type="submit"
+    >
+      Log Out
+    </button>
+  </form>
+</div>
 {% endblock %}
