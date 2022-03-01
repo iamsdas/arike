@@ -17,7 +17,7 @@
           >Facility</a
         >
         <a
-          class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if 'home' in request.path %} bg-gray-700 text-white {% endif %}"
+          class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if request.path == '/' %} bg-gray-700 text-white {% endif %}"
           href="/"
           >Home</a
         >

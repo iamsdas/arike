@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
@@ -56,3 +56,7 @@ class GenericFacilityListVeiw(LoginRequiredMixin, ListView):
 class GenericFacilityDetailView(DetailView, LoginRequiredMixin):
     model = Facility
     template_name = "facilities/detail.html"
+
+
+class HomeView(LoginRequiredMixin, TemplateView):
+    template_name = "home.html"
