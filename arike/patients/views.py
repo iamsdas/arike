@@ -126,7 +126,7 @@ class TreatmentDeleteView(GenericTreatmentFormView, DeleteView):
     pass
 
 
-class PatientListVeiw(ListView, LoginRequiredMixin):
+class PatientListVeiw(LoginRequiredMixin, ListView):
     model = Patient
     template_name = "patients/list.html"
     context_object_name = "patients"
@@ -150,7 +150,7 @@ class PatientListVeiw(ListView, LoginRequiredMixin):
         return ctx
 
 
-class FamilyListVeiw(ListView, LoginRequiredMixin):
+class FamilyListVeiw(LoginRequiredMixin, ListView):
     model = FamilyMember
     template_name = "family/list.html"
     context_object_name = "members"
@@ -168,7 +168,7 @@ class FamilyListVeiw(ListView, LoginRequiredMixin):
         return ctx
 
 
-class DiseaseListVeiw(ListView, LoginRequiredMixin):
+class DiseaseListVeiw(LoginRequiredMixin, ListView):
     model = PatientDisease
     template_name = "disease/list.html"
     context_object_name = "diseases"
@@ -183,7 +183,7 @@ class DiseaseListVeiw(ListView, LoginRequiredMixin):
         return ctx
 
 
-class TreatmentsListVeiw(ListView, LoginRequiredMixin):
+class TreatmentsListVeiw(LoginRequiredMixin, ListView):
     model = Treatment
     template_name = "treatment/list.html"
     context_object_name = "treatments"
@@ -198,6 +198,6 @@ class TreatmentsListVeiw(ListView, LoginRequiredMixin):
         return ctx
 
 
-class PatientDetailView(DetailView):
+class PatientDetailView(LoginRequiredMixin, DetailView):
     model = Patient
     template_name = "patients/detail.html"

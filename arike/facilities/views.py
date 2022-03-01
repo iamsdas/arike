@@ -28,7 +28,7 @@ class FacilityDeleteView(GenericFacilityFormView, DeleteView):
     pass
 
 
-class GenericFacilityListVeiw(ListView, LoginRequiredMixin):
+class GenericFacilityListVeiw(LoginRequiredMixin, ListView):
     model = Facility
     template_name = "facilities/list.html"
     context_object_name = "facilities"
@@ -53,6 +53,6 @@ class GenericFacilityListVeiw(ListView, LoginRequiredMixin):
         return ctx
 
 
-class GenericFacilityDetailView(DetailView):
+class GenericFacilityDetailView(DetailView, LoginRequiredMixin):
     model = Facility
     template_name = "facilities/detail.html"
