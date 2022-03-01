@@ -46,7 +46,7 @@ class Facility(models.Model):
     name = models.CharField(max_length=100)
     address = models.TextField()
     pincode = models.IntegerField()
-    phone = models.IntegerField()
+    phone = models.CharField(max_length=12, unique=True)
     ward = models.ForeignKey(Ward, on_delete=models.CASCADE)
 
     def __str__(self):

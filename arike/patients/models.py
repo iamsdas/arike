@@ -27,8 +27,8 @@ class Patient(models.Model):
     expired_time = models.DateField(null=True, blank=True)
     address = models.TextField()
     landmark = models.CharField(max_length=100)
-    phone = models.IntegerField(unique=True)
-    emergency_phone_number = models.IntegerField(unique=True)
+    phone = models.CharField(max_length=12, unique=True)
+    emergency_phone_number = models.CharField(max_length=12, unique=True)
     gender = models.CharField(max_length=20, choices=GenderChoice.choices)
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE)
 
@@ -38,7 +38,7 @@ class Patient(models.Model):
 
 class FamilyMember(models.Model):
     full_name = models.CharField(max_length=50)
-    phone = models.IntegerField(unique=True)
+    phone = models.CharField(max_length=12, unique=True)
     date_of_birth = models.DateField()
     email = models.CharField(max_length=50)
     relation = models.CharField(max_length=20, choices=FamilyRelation.choices)

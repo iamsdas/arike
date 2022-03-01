@@ -24,7 +24,7 @@ class User(AbstractUser):
     role = models.CharField(
         max_length=20, choices=UserRoles.choices, default=UserRoles.DISTRICT_ADMIN
     )
-    phone = models.CharField(max_length=16, unique=True)
+    phone = models.CharField(max_length=12, unique=True)
     is_verified = models.BooleanField(default=False, blank=True)
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE, null=True)
     email_preff_time = models.TimeField(default=datetime.now().time())
