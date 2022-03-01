@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
@@ -26,6 +27,8 @@ class User(AbstractUser):
     phone = models.CharField(max_length=16, unique=True)
     is_verified = models.BooleanField(default=False, blank=True)
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE, null=True)
+    email_preff_time = models.TimeField(default=datetime.now().time())
+    email_last_sent = models.DateField(default=datetime.now().date())
 
     def __str__(self):
         return self.name
