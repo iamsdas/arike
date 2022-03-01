@@ -1,10 +1,39 @@
 {% extends "base_dashboard.html" %} {% block inner %}
-<div>
-  <div>{{object.name}}</div>
-  <div>{{object.kind}}</div>
-  <div>{{object.address}}</div>
-  <div>{{object.pincode}}</div>
-  <div>{{object.phone}}</div>
-  <div>{{object.ward}}</div>
+<div class="w-2/3 mx-auto text-gray-700 py-4 space-y-4">
+  <div class="flex justify-between items-center">
+    <div class="text-3xl font-bold">{{object.name}}</div>
+    <div>
+      <a
+        href="{% url 'facilities:update' object.id %}"
+        class="py-2 px-3 text-white bg-gray-700 rounded-xl text-lg"
+        >Edit</a
+      >
+    </div>
+  </div>
+  <div class="text-2xl font-semibold text-gray-700 font-2xl">
+    {{object.kind}}
+  </div>
+  <div class="bg-white rounded-xl p-3">
+    <div class="font-semibold">Name</div>
+    <div>{{object.name}}</div>
+  </div>
+  <div class="bg-white rounded-xl p-3">
+    <div class="font-semibold">Address</div>
+    <div>{{object.address}}</div>
+  </div>
+  <div class="flex gap-3 w-full">
+    <div class="bg-white rounded-xl p-3 w-1/2">
+      <div class="font-semibold">Pincode</div>
+      <div>{{object.pincode}}</div>
+    </div>
+    <div class="bg-white rounded-xl p-3 w-1/2">
+      <div class="font-semibold">Phone</div>
+      <div>{{object.phone}}</div>
+    </div>
+  </div>
+  <div class="bg-white rounded-xl p-3">
+    <div class="font-semibold">Ward</div>
+    <div>{{object.ward}}</div>
+  </div>
 </div>
 {% endblock %}
