@@ -1,6 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.forms import ModelForm
-
+from arike.users.models import UserRoles
 from arike.patients.models import FamilyMember, Patient, PatientDisease, Treatment
+
+User = get_user_model()
 
 
 class PatientForm(ModelForm):
@@ -16,7 +19,14 @@ class PatientForm(ModelForm):
             "emergency_phone_number",
             "gender",
             "facility",
+            "reffered_nurse",
         ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["reffered_nurse"].queryset = User.objects.filter(
+            role=UserRoles.SECONDARY_NURSE
+        )
 
 
 class FamilyMemberForm(ModelForm):

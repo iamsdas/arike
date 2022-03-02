@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -14,6 +15,7 @@ from arike.patients.forms import (
 from arike.patients.models import FamilyMember, Patient, PatientDisease, Treatment
 from arike.facilities.models import Ward
 from arike.visits.models import VisitDetails
+from arike.users.models import UserRoles
 
 
 class GenericPatientFormView(LoginRequiredMixin):
@@ -22,7 +24,12 @@ class GenericPatientFormView(LoginRequiredMixin):
     success_url = "/patient/list/"
 
     def get_queryset(self):
-        return Patient.objects.all()
+        user = self.request.user
+        district = user.facility.ward.lsg_body.district
+        patients = Patient.objects.filter(facility__ward__lsg_body__district=district)
+        if user.role == UserRoles.SECONDARY_NURSE:
+            patients.union(Patient.objects.filter(reffered_nurse=user))
+        return patients
 
 
 class PatientCreateView(GenericPatientFormView, CreateView):

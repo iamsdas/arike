@@ -31,6 +31,9 @@ class Patient(models.Model):
     emergency_phone_number = models.CharField(max_length=12, unique=True)
     gender = models.CharField(max_length=20, choices=GenderChoice.choices)
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE)
+    reffered_nurse = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL
+    )
 
     def __str__(self):
         return self.full_name
