@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView
@@ -18,7 +18,15 @@ from arike.visits.models import VisitDetails
 from arike.users.models import UserRoles
 
 
-class GenericPatientFormView(LoginRequiredMixin):
+class NurseAuthMixin(LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.role in (
+            UserRoles.PRIMARY_NURSE,
+            UserRoles.SECONDARY_NURSE,
+        )
+
+
+class GenericPatientFormView(NurseAuthMixin):
     form_class = PatientForm
     template_name = "patients/form.html"
     success_url = "/patient/list/"
@@ -51,7 +59,7 @@ class PatientDeleteView(GenericPatientFormView, DeleteView):
         return HttpResponseRedirect(success_url)
 
 
-class GenericFamilyMemberFormView(LoginRequiredMixin):
+class GenericFamilyMemberFormView(NurseAuthMixin):
     form_class = FamilyMemberForm
     template_name = "family/form.html"
     slug_field = "id"
@@ -77,7 +85,7 @@ class MemberDeleteView(GenericFamilyMemberFormView, DeleteView):
     pass
 
 
-class GenericDiseaseFormView(LoginRequiredMixin):
+class GenericDiseaseFormView(NurseAuthMixin):
     form_class = DiseaseHistoryForm
     template_name = "disease/form.html"
     slug_field = "id"
@@ -109,7 +117,7 @@ class DiseaseDeleteView(GenericDiseaseFormView, DeleteView):
     pass
 
 
-class GenericTreatmentFormView(LoginRequiredMixin):
+class GenericTreatmentFormView(NurseAuthMixin):
     form_class = TreatmentForm
     template_name = "treatment/form.html"
     slug_field = "id"
@@ -141,7 +149,7 @@ class TreatmentDeleteView(GenericTreatmentFormView, DeleteView):
     pass
 
 
-class PatientListVeiw(LoginRequiredMixin, ListView):
+class PatientListVeiw(NurseAuthMixin, ListView):
     model = Patient
     template_name = "patients/list.html"
     context_object_name = "patients"
@@ -165,7 +173,7 @@ class PatientListVeiw(LoginRequiredMixin, ListView):
         return ctx
 
 
-class FamilyListVeiw(LoginRequiredMixin, ListView):
+class FamilyListVeiw(NurseAuthMixin, ListView):
     model = FamilyMember
     template_name = "family/list.html"
     context_object_name = "members"
@@ -183,7 +191,7 @@ class FamilyListVeiw(LoginRequiredMixin, ListView):
         return ctx
 
 
-class VisitListVeiw(LoginRequiredMixin, ListView):
+class VisitListVeiw(NurseAuthMixin, ListView):
     model = VisitDetails
     template_name = "visit_details/list.html"
     context_object_name = "visits"
@@ -197,7 +205,7 @@ class VisitListVeiw(LoginRequiredMixin, ListView):
         return ctx
 
 
-class DiseaseListVeiw(LoginRequiredMixin, ListView):
+class DiseaseListVeiw(NurseAuthMixin, ListView):
     model = PatientDisease
     template_name = "disease/list.html"
     context_object_name = "diseases"
@@ -212,7 +220,7 @@ class DiseaseListVeiw(LoginRequiredMixin, ListView):
         return ctx
 
 
-class TreatmentsListVeiw(LoginRequiredMixin, ListView):
+class TreatmentsListVeiw(NurseAuthMixin, ListView):
     model = Treatment
     template_name = "treatment/list.html"
     context_object_name = "treatments"
@@ -227,12 +235,12 @@ class TreatmentsListVeiw(LoginRequiredMixin, ListView):
         return ctx
 
 
-class PatientDetailView(LoginRequiredMixin, DetailView):
+class PatientDetailView(NurseAuthMixin, DetailView):
     model = Patient
     template_name = "patients/detail.html"
 
 
-class VisitDetailsDetailView(LoginRequiredMixin, DetailView):
+class VisitDetailsDetailView(NurseAuthMixin, DetailView):
     model = VisitDetails
     template_name = "visit_details/details.html"
     slug_field = "id"

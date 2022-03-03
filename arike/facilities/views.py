@@ -1,13 +1,19 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from arike.facilities.forms import FacilityCreationForm
 from arike.facilities.models import Facility, Ward
+from arike.users.models import UserRoles
 
 
-class GenericFacilityFormView(LoginRequiredMixin):
+class AdminAuthMixin(LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.role == UserRoles.DISTRICT_ADMIN
+
+
+class GenericFacilityFormView(AdminAuthMixin, UserPassesTestMixin):
     form_class = FacilityCreationForm
     template_name = "facilities/form.html"
     success_url = "/facilities/list/"
@@ -28,7 +34,7 @@ class FacilityDeleteView(GenericFacilityFormView, DeleteView):
     pass
 
 
-class GenericFacilityListVeiw(LoginRequiredMixin, ListView):
+class GenericFacilityListVeiw(AdminAuthMixin, ListView):
     model = Facility
     template_name = "facilities/list.html"
     context_object_name = "facilities"
@@ -53,7 +59,7 @@ class GenericFacilityListVeiw(LoginRequiredMixin, ListView):
         return ctx
 
 
-class GenericFacilityDetailView(DetailView, LoginRequiredMixin):
+class GenericFacilityDetailView(AdminAuthMixin, DetailView):
     model = Facility
     template_name = "facilities/detail.html"
 

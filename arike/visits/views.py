@@ -1,18 +1,27 @@
-from re import template
-from django.contrib.auth.mixins import LoginRequiredMixin
+from datetime import datetime
+
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from datetime import datetime
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from arike.facilities.models import Ward
+from arike.users.models import UserRoles
 from arike.visits.forms import VisitDetailsForm, VisitScheduleForm
 from arike.visits.models import VisitDetails, VisitSchedule
 
 
-class GenericScheduleFormView(LoginRequiredMixin):
+class NurseAuthMixin(LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.role in (
+            UserRoles.PRIMARY_NURSE,
+            UserRoles.SECONDARY_NURSE,
+        )
+
+
+class GenericScheduleFormView(NurseAuthMixin):
     form_class = VisitScheduleForm
     template_name = "schedule/form.html"
 
@@ -46,12 +55,12 @@ class ScheduleDeleteView(GenericScheduleFormView, DeleteView):
         return HttpResponseRedirect(success_url)
 
 
-class ScheduleDetailView(LoginRequiredMixin, DetailView):
+class ScheduleDetailView(NurseAuthMixin, DetailView):
     model = VisitSchedule
     template_name = "schedule/detail.html"
 
 
-class ScheduleListVeiw(LoginRequiredMixin, ListView):
+class ScheduleListVeiw(NurseAuthMixin, ListView):
     model = VisitSchedule
     template_name = "schedule/list.html"
     context_object_name = "visits"
@@ -71,7 +80,7 @@ class ScheduleListVeiw(LoginRequiredMixin, ListView):
         return ctx
 
 
-class GenericVisitDetailsFormView(LoginRequiredMixin):
+class GenericVisitDetailsFormView(NurseAuthMixin):
     form_class = VisitDetailsForm
     template_name = "schedule/form.html"
 
