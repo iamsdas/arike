@@ -11,7 +11,7 @@
           class="block hover:text-gray-700 hover:font-bold rounded-xl py-2 px-3 {% if 'user' in request.path or 'account' in request.path %} bg-gray-700 text-white {% endif %}"
           >Profile</a
         >
-        {% if user.role == 'DA' %}
+        {% if user.role == 'District Admin' %}
         <a
           class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if 'facility' in request.path %} bg-gray-700 text-white {% endif %}"
           href="{% url 'facilities:list' %}"
@@ -23,7 +23,7 @@
           href="/"
           >Home</a
         >
-        {% if user.role != 'DA' %}
+        {% if user.role != 'District Admin' %}
         <a
           class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if 'patient' in request.path %} bg-gray-700 text-white {% endif %}"
           href="{% url 'patients:list' %}"

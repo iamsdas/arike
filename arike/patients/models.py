@@ -1,7 +1,6 @@
-from datetime import datetime
-
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils import timezone
 
 from arike.facilities.models import Facility
 
@@ -35,6 +34,12 @@ class Patient(models.Model):
         User, null=True, blank=True, on_delete=models.SET_NULL
     )
     deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now())
+    updated_at = models.DateTimeField(null=True)
+
+    def save(self):
+        self.updated_at = timezone.now()
+        return super().save()
 
     def __str__(self):
         return self.full_name
@@ -53,12 +58,24 @@ class FamilyMember(models.Model):
     is_primary = models.BooleanField(default=False)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now())
+    updated_at = models.DateTimeField(null=True)
+
+    def save(self):
+        self.updated_at = timezone.now()
+        return super().save()
 
 
 class Disease(models.Model):
     name = models.CharField(max_length=20)
     icds_code = models.CharField(max_length=10, unique=True)
     deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now())
+    updated_at = models.DateTimeField(null=True)
+
+    def save(self):
+        self.updated_at = timezone.now()
+        return super().save()
 
     def __str__(self):
         return self.name
@@ -69,6 +86,12 @@ class PatientDisease(models.Model):
     disease = models.ForeignKey(Disease, on_delete=models.CASCADE)
     note = models.TextField()
     deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now())
+    updated_at = models.DateTimeField(null=True)
+
+    def save(self):
+        self.updated_at = timezone.now()
+        return super().save()
 
 
 class Treatment(models.Model):
@@ -77,6 +100,12 @@ class Treatment(models.Model):
     care_sub_type = models.CharField(max_length=20)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now())
+    updated_at = models.DateTimeField(null=True)
+
+    def save(self):
+        self.updated_at = timezone.now()
+        return super().save()
 
 
 class TreatmentNote(models.Model):
@@ -86,3 +115,9 @@ class TreatmentNote(models.Model):
     care_sub_type = models.CharField(max_length=20)
     treatment = models.OneToOneField(Treatment, on_delete=models.CASCADE)
     deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now())
+    updated_at = models.DateTimeField(null=True)
+
+    def save(self):
+        self.updated_at = timezone.now()
+        return super().save()

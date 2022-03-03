@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -16,10 +17,12 @@ class AdminAuthMixin(LoginRequiredMixin, UserPassesTestMixin):
 class GenericFacilityFormView(AdminAuthMixin, UserPassesTestMixin):
     form_class = FacilityCreationForm
     template_name = "facilities/form.html"
-    success_url = "/facilities/list/"
 
     def get_queryset(self):
         return Facility.objects.filter(deleted=False)
+
+    def get_success_url(self):
+        return reverse_lazy("facilities:list")
 
 
 class FacilityCreateView(GenericFacilityFormView, CreateView):

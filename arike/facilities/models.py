@@ -1,4 +1,6 @@
+from datetime import datetime
 from django.db import models
+from django.utils import timezone
 
 
 class FacilityType(models.TextChoices):
@@ -14,6 +16,12 @@ class LSGType(models.TextChoices):
 class State(models.Model):
     name = models.CharField(max_length=30)
     deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now())
+    updated_at = models.DateTimeField(null=True)
+
+    def save(self):
+        self.updated_at = timezone.now()
+        return super().save()
 
 
 class District(models.Model):
@@ -28,6 +36,12 @@ class LocalBody(models.Model):
     lsg_body_code = models.CharField(max_length=20)
     district = models.ForeignKey(District, on_delete=models.PROTECT)
     deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now())
+    updated_at = models.DateTimeField(null=True)
+
+    def save(self):
+        self.updated_at = timezone.now()
+        return super().save()
 
     def __str__(self):
         return self.name
@@ -38,6 +52,12 @@ class Ward(models.Model):
     number = models.IntegerField(unique=True)
     lsg_body = models.ForeignKey(LocalBody, on_delete=models.CASCADE)
     deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now())
+    updated_at = models.DateTimeField(null=True)
+
+    def save(self):
+        self.updated_at = timezone.now()
+        return super().save()
 
     def __str__(self):
         return self.name
@@ -53,6 +73,12 @@ class Facility(models.Model):
     phone = models.CharField(max_length=12, unique=True)
     ward = models.ForeignKey(Ward, on_delete=models.CASCADE)
     deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now())
+    updated_at = models.DateTimeField(null=True)
+
+    def save(self):
+        self.updated_at = timezone.now()
+        return super().save()
 
     def __str__(self):
         return self.name

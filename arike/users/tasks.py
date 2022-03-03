@@ -1,11 +1,9 @@
-from datetime import datetime
-
 from celery.schedules import crontab
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
-from arike.visits.models import VisitDetails
+from django.utils import timezone
 
-# from config import celery_app
+from arike.visits.models import VisitDetails
 from config.celery_app import app
 
 User = get_user_model()
@@ -21,7 +19,7 @@ def setup_periodic_tasks(sender, **kwargs):
 
 @app.task(bind=True)
 def mail_helper(self):
-    dt = datetime.now()
+    dt = timezone.now()
     for user in User.objects.exclude(email_last_sent=dt.date()).filter(
         email_preff_time__lte=dt.time()
     ):
@@ -34,7 +32,7 @@ def send_mail_reminder(user):
     print(f"starting to process mail for user {user}")
 
     visited_count = VisitDetails.objects.filter(
-        schedule__nurse=user, schedule__date=datetime.now().date()
+        schedule__nurse=user, schedule__date=timezone.now().date()
     ).count()
     email_content = f"Visited {visited_count} patients today"
 

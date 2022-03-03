@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
@@ -68,7 +68,7 @@ class ScheduleListVeiw(NurseAuthMixin, ListView):
     def get_queryset(self):
         return (
             VisitSchedule.objects.filter(
-                nurse=self.request.user, date__gte=datetime.now().date(), deleted=False
+                nurse=self.request.user, date__gte=timezone.now().date(), deleted=False
             )
             .order_by("date")
             .order_by("time")
