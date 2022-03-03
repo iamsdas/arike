@@ -13,7 +13,7 @@ class GenericFacilityFormView(LoginRequiredMixin):
     success_url = "/facilities/list/"
 
     def get_queryset(self):
-        return Facility.objects.all()
+        return Facility.objects.filter(deleted=False)
 
 
 class FacilityCreateView(GenericFacilityFormView, CreateView):
@@ -34,7 +34,7 @@ class GenericFacilityListVeiw(LoginRequiredMixin, ListView):
     context_object_name = "facilities"
 
     def get_queryset(self):
-        facilities = Facility.objects.all()
+        facilities = Facility.objects.filter(deleted=False)
         search_filter = self.request.GET.get("search")
         ward_filter = self.request.GET.get("ward")
         type_filter = self.request.GET.get("type")

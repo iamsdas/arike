@@ -34,6 +34,7 @@ class Patient(models.Model):
     reffered_nurse = models.ForeignKey(
         User, null=True, blank=True, on_delete=models.SET_NULL
     )
+    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.full_name
@@ -51,11 +52,13 @@ class FamilyMember(models.Model):
     remarks = models.TextField()
     is_primary = models.BooleanField(default=False)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    deleted = models.BooleanField(default=False)
 
 
 class Disease(models.Model):
     name = models.CharField(max_length=20)
     icds_code = models.CharField(max_length=10, unique=True)
+    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -65,6 +68,7 @@ class PatientDisease(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     disease = models.ForeignKey(Disease, on_delete=models.CASCADE)
     note = models.TextField()
+    deleted = models.BooleanField(default=False)
 
 
 class Treatment(models.Model):
@@ -72,6 +76,7 @@ class Treatment(models.Model):
     care_type = models.CharField(max_length=20)
     care_sub_type = models.CharField(max_length=20)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    deleted = models.BooleanField(default=False)
 
 
 class TreatmentNote(models.Model):
@@ -80,3 +85,4 @@ class TreatmentNote(models.Model):
     care_type = models.CharField(max_length=10)
     care_sub_type = models.CharField(max_length=20)
     treatment = models.OneToOneField(Treatment, on_delete=models.CASCADE)
+    deleted = models.BooleanField(default=False)

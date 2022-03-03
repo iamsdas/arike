@@ -13,11 +13,13 @@ class LSGType(models.TextChoices):
 
 class State(models.Model):
     name = models.CharField(max_length=30)
+    deleted = models.BooleanField(default=False)
 
 
 class District(models.Model):
     name = models.CharField(max_length=30)
     state = models.ForeignKey(State, on_delete=models.CASCADE)
+    deleted = models.BooleanField(default=False)
 
 
 class LocalBody(models.Model):
@@ -25,6 +27,7 @@ class LocalBody(models.Model):
     kind = models.CharField(max_length=50, choices=LSGType.choices)
     lsg_body_code = models.CharField(max_length=20)
     district = models.ForeignKey(District, on_delete=models.PROTECT)
+    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -34,6 +37,7 @@ class Ward(models.Model):
     name = models.CharField(max_length=30)
     number = models.IntegerField(unique=True)
     lsg_body = models.ForeignKey(LocalBody, on_delete=models.CASCADE)
+    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -48,6 +52,7 @@ class Facility(models.Model):
     pincode = models.IntegerField()
     phone = models.CharField(max_length=12, unique=True)
     ward = models.ForeignKey(Ward, on_delete=models.CASCADE)
+    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

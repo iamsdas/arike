@@ -29,6 +29,7 @@ class User(AbstractUser):
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE, null=True)
     email_preff_time = models.TimeField(default=datetime.now().time())
     email_last_sent = models.DateField(default=datetime.now().date())
+    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

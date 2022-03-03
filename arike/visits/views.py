@@ -17,7 +17,7 @@ class GenericScheduleFormView(LoginRequiredMixin):
     template_name = "schedule/form.html"
 
     def get_queryset(self):
-        return VisitSchedule.objects.filter(nurse=self.request.user)
+        return VisitSchedule.objects.filter(nurse=self.request.user, deleted=False)
 
     def get_success_url(self):
         return reverse_lazy("visits:list")
@@ -38,7 +38,12 @@ class ScheduleUpdateView(GenericScheduleFormView, UpdateView):
 
 
 class ScheduleDeleteView(GenericScheduleFormView, DeleteView):
-    pass
+    def delete(self, request, *args: str, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.deleted = True
+        self.object.save()
+        return HttpResponseRedirect(success_url)
 
 
 class ScheduleDetailView(LoginRequiredMixin, DetailView):
@@ -54,7 +59,7 @@ class ScheduleListVeiw(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return (
             VisitSchedule.objects.filter(
-                nurse=self.request.user, date__gte=datetime.now().date()
+                nurse=self.request.user, date__gte=datetime.now().date(), deleted=False
             )
             .order_by("date")
             .order_by("time")
@@ -71,7 +76,7 @@ class GenericVisitDetailsFormView(LoginRequiredMixin):
     template_name = "schedule/form.html"
 
     def get_queryset(self):
-        return VisitDetails.objects.all()
+        return VisitDetails.objects.filter(deleted=False)
 
     def get_success_url(self):
         return reverse_lazy("visits:view", kwargs={"pk": self.kwargs["pk"]})

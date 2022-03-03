@@ -26,7 +26,9 @@ class GenericPatientFormView(LoginRequiredMixin):
     def get_queryset(self):
         user = self.request.user
         district = user.facility.ward.lsg_body.district
-        patients = Patient.objects.filter(facility__ward__lsg_body__district=district)
+        patients = Patient.objects.filter(
+            facility__ward__lsg_body__district=district, deleted=False
+        )
         if user.role == UserRoles.SECONDARY_NURSE:
             patients.union(Patient.objects.filter(reffered_nurse=user))
         return patients
@@ -41,7 +43,12 @@ class PatientUpdateView(GenericPatientFormView, UpdateView):
 
 
 class PatientDeleteView(GenericPatientFormView, DeleteView):
-    pass
+    def delete(self, request: HttpRequest, *args: str, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.deleted = True
+        self.object.save()
+        return HttpResponseRedirect(success_url)
 
 
 class GenericFamilyMemberFormView(LoginRequiredMixin):
@@ -52,7 +59,7 @@ class GenericFamilyMemberFormView(LoginRequiredMixin):
 
     def get_queryset(self):
         patient_pk = self.kwargs["pk"]
-        return FamilyMember.objects.filter(patient__pk=patient_pk)
+        return FamilyMember.objects.filter(patient__pk=patient_pk, deleted=False)
 
     def get_success_url(self):
         return reverse_lazy("patients:family", kwargs={"pk": self.kwargs["pk"]})
