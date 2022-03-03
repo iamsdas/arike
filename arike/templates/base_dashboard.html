@@ -8,19 +8,22 @@
       <div class="space-y-4 text-lg px-3">
         <a
           href="{% url 'users:redirect' %}"
-          class="block hover:text-gray-700 hover:font-bold rounded-xl py-2 px-3 {% if 'user' in request.path %} bg-gray-700 text-white {% endif %}"
+          class="block hover:text-gray-700 hover:font-bold rounded-xl py-2 px-3 {% if 'user' in request.path or 'account' in request.path %} bg-gray-700 text-white {% endif %}"
           >Profile</a
         >
+        {% if user.role == 'DA' %}
         <a
           class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if 'facility' in request.path %} bg-gray-700 text-white {% endif %}"
           href="{% url 'facilities:list' %}"
           >Facility</a
         >
+        {% endif %}
         <a
           class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if request.path == '/' %} bg-gray-700 text-white {% endif %}"
           href="/"
           >Home</a
         >
+        {% if user.role != 'DA' %}
         <a
           class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if 'patient' in request.path %} bg-gray-700 text-white {% endif %}"
           href="{% url 'patients:list' %}"
@@ -31,6 +34,7 @@
           href="{% url 'visits:list' %}"
           >Schedule</a
         >
+        {% endif %}
       </div>
     </div>
     <div class="border-t-2 p-2">
