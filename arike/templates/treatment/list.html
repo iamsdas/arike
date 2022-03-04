@@ -1,44 +1,72 @@
 {% extends "base_dashboard.html" %} {% block inner %}
-<div class="flex justify-between items-center pb-3">
-  <div class="font-extrabold text-4xl text-gray-700">Treatments</div>
-  <a
-    href="{% url 'patients:trtmnt_add' patient.id %}"
-    class="py-2 px-3 text-white bg-gray-700 rounded-xl text-lg"
-    >New</a
-  >
-</div>
-<div class="py-3">
-  <div class="text-gray-700 text-2xl font-bold">{{patient.full_name}}</div>
-  <div class="text-gray-500 text-lg">{{patient.address}}</div>
-</div>
-
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
-  {% for treatment in treatments %}
-  <div
-    class="p-4 bg-white rounded-xl text-gray-700 grid grid-cols-2 gap-3 text-gray-700"
-  >
-    <div class="flex justify-between items-center col-span-2">
-      <div class="font-bold text-lg capitalize">{{treatment.care_type}}</div>
-      <div class="font-semibold text-gray-500">{{treatment.care_sub_type}}</div>
+<div class="w-2/3 mx-auto">
+  <div class="flex justify-between items-center pb-3">
+    <div class="font-extrabold text-4xl text-gray-700">
+      {% if 'visit' in request.path %} Active {% endif %} Treatments
     </div>
-    <div class="col-span-2 text-gray-500">{{treatment.description}}</div>
-    <!-- <div>
-      <div class="font-semibold">Phone Number</div>
-      <div>{{treatment.phone}}</div>
-    </div> -->
-    <div class="col-span-2 space-x-2">
-      <a
-        href="{% url 'patients:trtmnt_update' patient.id treatment.id %}"
-        class="py-2 px-3 text-white bg-gray-700 rounded-xl text-lg"
-        >Edit</a
-      >
-      <a
-        href="{% url 'patients:trtmnt_del' patient.id treatment.id %}"
-        class="py-1 px-2 border-4 border-gray-700 font-semibold rounded-xl text-lg"
-        >Delete</a
-      >
-    </div>
+    <a
+      href="{% url 'patients:trtmnt_add' patient.id %}"
+      class="py-2 px-3 text-white bg-gray-700 rounded-xl text-lg"
+      >New</a
+    >
   </div>
-  {% endfor %}
+  {% if 'visit' not in request.path %}
+  <div class="py-3">
+    <div class="text-gray-700 text-2xl font-bold">{{patient.full_name}}</div>
+    <div class="text-gray-500 text-lg">{{patient.address}}</div>
+  </div>
+  {% endif %}
+
+  <div class="grid grid-cols-1 gap-10">
+    {% for treatment in treatments %}
+    <div
+      class="p-6 bg-white rounded-xl text-gray-700 grid grid-cols-2 gap-2 text-gray-700"
+    >
+      <div class="flex justify-between items-center col-span-2 uppercase">
+        <div class="font-bold text-xl">{{treatment.care_type}}</div>
+        <div class="font-bold text-xl">{{treatment.care_sub_type}}</div>
+      </div>
+      <div class="col-span-2 flex justify-between items-center">
+        <div>
+          <div class="font-semibold">Created At</div>
+          <div class="text-gray-500">{{treatment.created_at}}</div>
+        </div>
+        <div>
+          <div class="font-semibold">Updated At</div>
+          <div class="text-gray-500">{{treatment.updated_at}}</div>
+        </div>
+      </div>
+      <div class="col-span-2">
+        <div class="font-semibold">Description</div>
+        <div class="text-gray-500 text-justify">{{treatment.description}}</div>
+      </div>
+      <div class="col-span-2 space-x-2 pt-2">
+        {% if 'visit' in request.path %}
+        <a
+          href="{% url 'visits:add_note' visit_id treatment.id %}"
+          class="py-2 px-3 text-white bg-gray-700 rounded-xl text-lg"
+          >Add Note</a
+        >
+        {% else %}
+        <a
+          href="{% url 'patients:trtmnt_update' patient.id treatment.id %}"
+          class="py-2 px-3 text-white bg-gray-700 rounded-xl text-lg"
+          >Edit</a
+        >
+        {% endif %}
+        <a
+          href="{% url 'patients:trtmnt_del' patient.id treatment.id %}"
+          class="py-1 px-2 border-4 border-gray-700 font-semibold text-gray-700 rounded-xl text-lg"
+          >Delete</a
+        >
+        <a
+          href="{% url 'patients:treatment_detail' patient.id treatment.id %}"
+          class="py-2 px-3 text-white bg-gray-700 rounded-xl text-lg"
+          >Details</a
+        >
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}

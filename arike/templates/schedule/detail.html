@@ -5,7 +5,11 @@
     <div
       class="py-14 w-1/2 bg-white rounded-xl flex justify-center items-center"
     >
-      <a href="" class="hover:text-gray-700 hover:font-bold">Treatment Notes</a>
+      <a
+        href="{% url 'visits:treatments' object.id %}"
+        class="hover:text-gray-700 hover:font-bold"
+        >Treatment Notes</a
+      >
     </div>
     <div
       class="py-14 w-1/2 bg-white rounded-xl flex justify-center items-center"

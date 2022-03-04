@@ -15,6 +15,7 @@ from arike.patients.views import (
     PatientUpdateView,
     TreatmentCreateView,
     TreatmentDeleteView,
+    TreatmentDetailView,
     TreatmentsListVeiw,
     TreatmentUpdateView,
     VisitDetailsDetailView,
@@ -39,6 +40,11 @@ urlpatterns = [
     ),
     path("<pk>/disease/del/<id>/", view=DiseaseDeleteView.as_view(), name="dis_del"),
     path("<pk>/treatment/", view=TreatmentsListVeiw.as_view(), name="treatments"),
+    path(
+        "<pk>/treatment/<id>",
+        view=TreatmentDetailView.as_view(),
+        name="treatment_detail",
+    ),
     path("<pk>/treatment/add/", view=TreatmentCreateView.as_view(), name="trtmnt_add"),
     path(
         "<pk>/treatment/update/<id>/",

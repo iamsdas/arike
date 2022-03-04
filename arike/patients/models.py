@@ -106,18 +106,3 @@ class Treatment(models.Model):
     def save(self):
         self.updated_at = timezone.now()
         return super().save()
-
-
-class TreatmentNote(models.Model):
-    note = models.TextField()
-    description = models.TextField()
-    care_type = models.CharField(max_length=10)
-    care_sub_type = models.CharField(max_length=20)
-    treatment = models.OneToOneField(Treatment, on_delete=models.CASCADE)
-    deleted = models.BooleanField(default=False)
-    created_at = models.DateTimeField(default=timezone.now())
-    updated_at = models.DateTimeField(null=True)
-
-    def save(self):
-        self.updated_at = timezone.now()
-        return super().save()

@@ -14,7 +14,7 @@ from arike.patients.forms import (
 )
 from arike.patients.models import FamilyMember, Patient, PatientDisease, Treatment
 from arike.facilities.models import Ward
-from arike.visits.models import VisitDetails
+from arike.visits.models import TreatmentNote, VisitDetails, VisitSchedule
 from arike.users.models import UserRoles
 
 
@@ -149,6 +149,22 @@ class TreatmentDeleteView(GenericTreatmentFormView, DeleteView):
     pass
 
 
+class TreatmentDetailView(NurseAuthMixin, DetailView):
+    model = Treatment
+    template_name = "treatment/detail.html"
+    slug_field = "id"
+    slug_url_kwarg = "id"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["notes"] = list(
+            TreatmentNote.objects.filter(treatment__id=self.kwargs["id"]).values_list(
+                "note", flat=True
+            )
+        )
+        return ctx
+
+
 class PatientListVeiw(NurseAuthMixin, ListView):
     model = Patient
     template_name = "patients/list.html"
@@ -249,4 +265,7 @@ class VisitDetailsDetailView(NurseAuthMixin, DetailView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx["patient"] = Patient.objects.get(pk=self.kwargs["pk"])
+        visit_details = VisitDetails.objects.get(id=self.kwargs["id"])
+        schedule = visit_details.schedule
+        ctx["notes"] = TreatmentNote.objects.filter(visit=schedule)
         return ctx

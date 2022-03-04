@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from arike.visits.models import VisitDetails, VisitSchedule
+from arike.visits.models import VisitDetails, VisitSchedule, TreatmentNote
 
 
 class VisitScheduleForm(ModelForm):
@@ -24,3 +24,9 @@ class VisitDetailsForm(ModelForm):
             "note",
             "schedule",
         ]
+
+
+class TreatmentNoteForm(ModelForm):
+    class Meta:
+        model = TreatmentNote
+        fields = ["note"]

@@ -1,0 +1,40 @@
+{% extends "base_dashboard.html" %} {% block inner %}
+<div class="w-2/3 mx-auto">
+  <div class="font-extrabold text-4xl text-gray-700 py-4">Treatment</div>
+
+  <div class="grid grid-cols-1 gap-10">
+    <div
+      class="p-6 bg-white rounded-xl text-gray-700 grid grid-cols-2 gap-2 text-gray-700"
+    >
+      <div class="flex justify-between items-center col-span-2 uppercase">
+        <div class="font-bold text-xl">{{object.care_type}}</div>
+        <div class="font-bold text-xl">{{object.care_sub_type}}</div>
+      </div>
+      <div class="col-span-2 flex justify-between items-center">
+        <div>
+          <div class="font-semibold">Created At</div>
+          <div class="text-gray-500">{{object.created_at}}</div>
+        </div>
+        <div>
+          <div class="font-semibold">Updated At</div>
+          <div class="text-gray-500">{{object.updated_at}}</div>
+        </div>
+      </div>
+      <div class="col-span-2">
+        <div class="font-semibold">Description</div>
+        <div class="text-gray-500 text-justify">{{object.description}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="font-extrabold text-4xl text-gray-700 py-4">Notes</div>
+  <div class="grid grid-cols-1 gap-4">
+    {% for note in notes %}
+    <div
+      class="p-6 bg-white rounded-xl text-gray-700 grid grid-cols-2 gap-2 text-gray-700"
+    >
+      {{note}}
+    </div>
+    {% endfor%}
+  </div>
+</div>
+{% endblock %}

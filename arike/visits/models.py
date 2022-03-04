@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 
-from arike.patients.models import Patient
+from arike.patients.models import Patient, Treatment
 
 User = get_user_model()
 
@@ -48,6 +48,19 @@ class VisitDetails(models.Model):
     symptoms = models.CharField(max_length=20, choices=Symptoms.choices)
     note = models.TextField()
     schedule = models.OneToOneField(VisitSchedule, on_delete=models.CASCADE)
+    deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now())
+    updated_at = models.DateTimeField(null=True)
+
+    def save(self):
+        self.updated_at = timezone.now()
+        return super().save()
+
+
+class TreatmentNote(models.Model):
+    note = models.TextField()
+    treatment = models.ForeignKey(Treatment, on_delete=models.CASCADE)
+    visit = models.ForeignKey(VisitSchedule, on_delete=models.CASCADE, null=True)
     deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now())
     updated_at = models.DateTimeField(null=True)
