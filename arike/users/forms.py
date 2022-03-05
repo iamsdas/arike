@@ -6,6 +6,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
 
+from arike.users.models import UserRoles
+
 User = get_user_model()
 
 
@@ -48,6 +50,7 @@ class UserSignupForm(UserCreationForm):
         self.fields["username"].widget.attrs.update({"placeholder": "Username"})
         self.fields["password1"].widget.attrs.update({"placeholder": "Password"})
         self.fields["password2"].widget.attrs.update({"placeholder": "Password"})
+        self.fields["role"].choices = UserRoles.choices[1::]
 
 
 class UserSocialSignupForm(SocialSignupForm):

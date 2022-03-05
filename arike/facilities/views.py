@@ -14,7 +14,7 @@ class AdminAuthMixin(LoginRequiredMixin, UserPassesTestMixin):
         return self.request.user.role == UserRoles.DISTRICT_ADMIN
 
 
-class GenericFacilityFormView(AdminAuthMixin, UserPassesTestMixin):
+class GenericFacilityFormView(AdminAuthMixin):
     form_class = FacilityCreationForm
     template_name = "facilities/form.html"
 
