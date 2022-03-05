@@ -6,7 +6,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
 
-from arike.users.models import UserRoles
+from arike.users.models import UserRoles, User as UserModel
 
 User = get_user_model()
 
@@ -32,7 +32,7 @@ class UserAdminCreationForm(admin_forms.UserCreationForm):
 
 class UserSignupForm(UserCreationForm):
     class Meta:
-        model = User
+        model = UserModel
         fields = [
             "username",
             "name",

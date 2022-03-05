@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DetailView, RedirectView, UpdateView
 
 from arike.users.forms import UserSignupForm
-from arike.users.models import UserRoles
+from arike.users.models import UserRoles, User as UserModel
 
 User = get_user_model()
 
@@ -29,10 +29,12 @@ class AdminAuthMixin(LoginRequiredMixin, UserPassesTestMixin):
 class UserFormView(AdminAuthMixin):
     form_class = UserSignupForm
     template_name = "users/user_form.html"
-    success_url = "/home"
 
     def get_queryset(self):
-        return User.objects.all()
+        return UserModel.objects.all()
+
+    def get_success_url(self):
+        return "/"
 
 
 class NurseSignUpView(UserFormView, CreateView):

@@ -339,3 +339,4 @@ SPECTACULAR_SETTINGS = {
 # ------------------------------------------------------------------------------
 
 ACCOUNT_USER_DISPLAY = lambda user: str(user)
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
