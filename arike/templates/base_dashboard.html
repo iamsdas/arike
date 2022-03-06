@@ -8,7 +8,7 @@
       <div class="space-y-4 text-lg px-3">
         <a
           href="{% url 'users:redirect' %}"
-          class="block hover:text-gray-700 hover:font-bold rounded-xl py-2 px-3{%if 'register' not in request.path%} {% if 'user' in request.path or 'account' in request.path %} bg-gray-700 text-white {% endif %} {% endif %}"
+          class="block hover:text-gray-700 hover:font-bold rounded-xl py-2 px-3{% if 'register' not in request.path and 'list' not in request.path %} {% if 'user' in request.path or 'account' in request.path %} bg-gray-700 text-white {% endif %} {% endif %}"
           >Profile</a
         >
         {% if user.role == 'District Admin' %}
@@ -18,9 +18,9 @@
           >Facility</a
         >
         <a
-          href="{% url 'users:create' %}"
-          class="block hover:text-gray-700 hover:font-bold rounded-xl py-2 px-3 {% if 'register' in request.path %} bg-gray-700 text-white {% endif %}"
-          >Registration</a
+          href="{% url 'users:list' %}"
+          class="block hover:text-gray-700 hover:font-bold rounded-xl py-2 px-3 {% if 'users' in request.path %}{% if 'list' in request.path or 'register' in request.path %} bg-gray-700 text-white {% endif %} {% endif %}"
+          >Users</a
         >
 
         {% endif %}

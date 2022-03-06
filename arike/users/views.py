@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
+from django.views.generic import ListView
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DetailView, RedirectView, UpdateView
 
@@ -39,6 +40,23 @@ class UserFormView(AdminAuthMixin):
 
 class NurseSignUpView(UserFormView, CreateView):
     pass
+
+
+class UserListVeiw(AdminAuthMixin, ListView):
+    model = User
+    template_name = "users/list.html"
+    context_object_name = "users"
+
+    def get_queryset(self):
+        district = self.request.user.facility.ward.lsg_body.district
+        users = User.objects.filter(
+            deleted=False, facility__ward__lsg_body__district=district
+        ).exclude(role=UserRoles.DISTRICT_ADMIN)
+        search_filter = self.request.GET.get("search")
+
+        if search_filter is not None:
+            users = users.filter(name__icontains=search_filter)
+        return users
 
 
 class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
