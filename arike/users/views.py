@@ -49,7 +49,7 @@ class UserFormView(AdminAuthMixin):
         return users
 
     def get_success_url(self):
-        return "/"
+        return "/users/list/"
 
 
 class NurseSignUpView(UserFormView, CreateView):

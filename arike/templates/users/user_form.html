@@ -8,7 +8,7 @@
   <form
     class="form-horizontal"
     method="post"
-    action="{% if 'register' in request.path %}{% else %}{% url 'users:update' %} {% endif %}"
+    action=""
   >
     {% csrf_token %} {{ form|crispy }}
     <div class="control-group">

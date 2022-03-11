@@ -34,7 +34,6 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = UserModel
         fields = [
-            "username",
             "name",
             "phone",
             "email",
@@ -47,7 +46,6 @@ class UserForm(forms.ModelForm):
         self.fields["name"].widget.attrs.update({"placeholder": "Full Name"})
         self.fields["phone"].widget.attrs.update({"placeholder": "Phone Number"})
         self.fields["email"].widget.attrs.update({"placeholder": "Email Address"})
-        self.fields["username"].widget.attrs.update({"placeholder": "Username"})
         self.fields["role"].choices = UserRoles.choices[1::]
 
 
