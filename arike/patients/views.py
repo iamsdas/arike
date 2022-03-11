@@ -33,11 +33,16 @@ class GenericPatientFormView(NurseAuthMixin):
     def get_queryset(self):
         user = self.request.user
         district = user.facility.ward.lsg_body.district
-        patients = Patient.objects.filter(
-            facility__ward__lsg_body__district=district, deleted=False
-        )
         if user.role == UserRoles.SECONDARY_NURSE:
-            patients.union(Patient.objects.filter(reffered_nurse=user))
+            patients = patients.filter(facility=user.facility)
+            patients = patients.union(
+                Patient.objects.filter(deleted=False, reffered_nurse=user)
+            )
+        else:
+            patients = Patient.objects.filter(
+                facility__ward__lsg_body__district=district, deleted=False
+            )
+
         return patients
 
 
@@ -170,7 +175,16 @@ class PatientListVeiw(NurseAuthMixin, ListView):
     context_object_name = "patients"
 
     def get_queryset(self):
+        user = self.request.user
+        district = user.facility.ward.lsg_body.district
         patients = Patient.objects.filter(deleted=False)
+        if user.role == UserRoles.SECONDARY_NURSE:
+            patients = patients.filter(facility=user.facility)
+            patients = patients.union(
+                Patient.objects.filter(deleted=False, reffered_nurse=user)
+            )
+        else:
+            patients = patients.filter(facility__ward__lsg_body__district=district)
         search_filter = self.request.GET.get("search")
         ward_filter = self.request.GET.get("ward")
         type_filter = self.request.GET.get("type")
