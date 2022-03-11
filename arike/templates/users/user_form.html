@@ -2,9 +2,14 @@
 {% block inner %}
 <div class="w-full sm:w-2/3 mx-auto">
   <div class="font-semibold text-3xl text-gray-700 pb-4 text-center">
-    {% if 'register' in request.path %} Add {% else %} Update {% endif %} User
+    {% if 'register' in request.path %} Add {% elif 'del' in request.path %}
+    Delete {% else %} Update {% endif %} User
   </div>
-  <form class="form-horizontal" method="post" action="{% if 'register' in request.path %}{% else %}{% url 'users:update' %} {% endif %}">
+  <form
+    class="form-horizontal"
+    method="post"
+    action="{% if 'register' in request.path %}{% else %}{% url 'users:update' %} {% endif %}"
+  >
     {% csrf_token %} {{ form|crispy }}
     <div class="control-group">
       <div class="controls">

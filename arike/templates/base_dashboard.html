@@ -11,7 +11,7 @@
           class="block hover:text-gray-700 hover:font-bold rounded-xl py-2 px-3{% if 'register' not in request.path and 'list' not in request.path %} {% if 'user' in request.path or 'account' in request.path %} bg-gray-700 text-white {% endif %} {% endif %}"
           >Profile</a
         >
-        {% if user.role == 'District Admin' %}
+        {% if request.user.role == 'District Admin' %}
         <a
           class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if 'facility' in request.path %} bg-gray-700 text-white {% endif %}"
           href="{% url 'facilities:list' %}"
@@ -29,7 +29,7 @@
           href="/"
           >Home</a
         >
-        {% if user.role != 'District Admin' %}
+        {% if request.user.role != 'District Admin' %}
         <a
           class="block hover:text-gray-700 hover:font-bold rounded-xl p-2 px-3 {% if 'patient' in request.path %} bg-gray-700 text-white {% endif %}"
           href="{% url 'patients:list' %}"
@@ -45,7 +45,7 @@
     </div>
     <div class="border-t-2 p-2">
       <div class="captalize text-xl text-gray-700 font-bold">
-        {% user_display user %}
+        {% user_display request.user %}
       </div>
       <div>
         <a

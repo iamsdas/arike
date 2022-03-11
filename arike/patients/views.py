@@ -171,7 +171,7 @@ class PatientListVeiw(NurseAuthMixin, ListView):
     context_object_name = "patients"
 
     def get_queryset(self):
-        patients = Patient.objects.all()
+        patients = Patient.objects.filter(deleted=False)
         search_filter = self.request.GET.get("search")
         ward_filter = self.request.GET.get("ward")
         type_filter = self.request.GET.get("type")
@@ -195,7 +195,7 @@ class FamilyListVeiw(NurseAuthMixin, ListView):
     context_object_name = "members"
 
     def get_queryset(self):
-        family_members = FamilyMember.objects.all()
+        family_members = FamilyMember.objects.filter(deleted=False, patient__pk=self.kwargs["pk"])
         search_filter = self.request.GET.get("search")
         if search_filter is not None:
             family_members = family_members.filter(full_name__icontains=search_filter)
@@ -213,7 +213,9 @@ class VisitListVeiw(NurseAuthMixin, ListView):
     context_object_name = "visits"
 
     def get_queryset(self):
-        return VisitDetails.objects.filter(schedule__patient__pk=self.kwargs["pk"])
+        return VisitDetails.objects.filter(
+            schedule__patient__pk=self.kwargs["pk"], deleted=False
+        )
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -227,7 +229,9 @@ class DiseaseListVeiw(NurseAuthMixin, ListView):
     context_object_name = "diseases"
 
     def get_queryset(self):
-        diseases = PatientDisease.objects.filter(patient__pk=self.kwargs["pk"])
+        diseases = PatientDisease.objects.filter(
+            patient__pk=self.kwargs["pk"], deleted=False
+        )
         return diseases
 
     def get_context_data(self, **kwargs):
@@ -242,7 +246,9 @@ class TreatmentsListVeiw(NurseAuthMixin, ListView):
     context_object_name = "treatments"
 
     def get_queryset(self):
-        treatments = Treatment.objects.filter(patient__pk=self.kwargs["pk"])
+        treatments = Treatment.objects.filter(
+            patient__pk=self.kwargs["pk"], deleted=False
+        )
         return treatments
 
     def get_context_data(self, **kwargs):

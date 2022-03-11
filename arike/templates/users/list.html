@@ -18,11 +18,46 @@
     />
     <div class="space-x-2">
       <button
+        class="p-3 rounded-xl bg-white"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseExample"
+        aria-expanded="false"
+        aria-controls="collapseExample"
+      >
+        Filter
+      </button>
+      <select name="search" class="p-3 rounded-xl bg-white">
+        <option value="" selected disabled>Sort</option>
+      </select>
+      <button
         type="submit"
         class="px-4 py-3 rounded-3xl font-semibold uppercase border bg-white border-gray-700"
       >
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
+    </div>
+  </div>
+  <div class="collapse" id="collapseExample">
+    <div class="rounded-xl bg-white p-4 mb-3 space-x-2">
+      <div class="text-gray-700 font-bold text-lg pb-2 px-1">Filters</div>
+      <select
+        name="facility"
+        class="px-3 py-2 rounded-xl bg-white border-2 border-gray-700"
+      >
+        <option value="" selected disabled>Facility</option>
+        {% for facility in facilities %}
+        <option value="{{facility.id}}">{{facility.name}}</option>
+        {% endfor %}
+      </select>
+      <select
+        name="role"
+        class="px-3 py-2 rounded-xl bg-white border-2 border-gray-700"
+      >
+        <option value="" selected disabled>Role</option>
+        <option value="Primary Nurse">Primary Nurse</option>
+        <option value="Secondary Nurse">Secondary Nurse</option>
+      </select>
     </div>
   </div>
 </form>
@@ -35,14 +70,21 @@
     </div>
     <div class="py-2">{{user.facility}}</div>
     <div
-      class="border-t-2 border-gray-300 flex justify-start items-center pt-2"
+      class="border-t-2 border-gray-300 flex justify-between items-center pt-2"
     >
       <div class="font-semibold">+91 {{user.phone}}</div>
-      <!-- <a
-        href="{% url 'users:detail' username=user.username %}"
-        class="py-1 px-2 border-2 border-gray-700 rounded-lg block hover:text-gray-700"
-        >View</a
-      > -->
+      <div class="flex justify-between space-x-1">
+        <a
+          href="{% url 'users:detail' username=user.username %}"
+          class="py-1 px-2 border-2 border-gray-700 rounded-lg block hover:text-gray-700"
+          >View</a
+        >
+        <a
+          href="{% url 'users:delete' username=user.username %}"
+          class="py-1 px-2 border-2 border-gray-700 rounded-lg block hover:text-gray-700"
+          >Delete</a
+        >
+      </div>
     </div>
   </div>
   {% endfor %}

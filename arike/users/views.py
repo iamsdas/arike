@@ -4,12 +4,24 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
 from django.views.generic import ListView
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import CreateView, DetailView, RedirectView, UpdateView
+from django.views.generic import (
+    CreateView,
+    DetailView,
+    RedirectView,
+    UpdateView,
+    DeleteView,
+)
+from arike.facilities.models import Facility
 
-from arike.users.forms import UserSignupForm
-from arike.users.models import UserRoles, User as UserModel
+from arike.users.forms import UserForm, UserSignupForm
+from arike.users.models import UserRoles
 
 User = get_user_model()
+
+
+class AdminAuthMixin(LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.role == UserRoles.DISTRICT_ADMIN
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -22,23 +34,33 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 user_detail_view = UserDetailView.as_view()
 
 
-class AdminAuthMixin(LoginRequiredMixin, UserPassesTestMixin):
-    def test_func(self):
-        return self.request.user.role == UserRoles.DISTRICT_ADMIN
-
-
 class UserFormView(AdminAuthMixin):
-    form_class = UserSignupForm
+    form_class = UserForm
     template_name = "users/user_form.html"
+    slug_field = "username"
+    slug_url_kwarg = "username"
 
     def get_queryset(self):
-        return UserModel.objects.all()
+        district = self.request.user.facility.ward.lsg_body.district
+        users = User.objects.filter(
+            deleted=False, facility__ward__lsg_body__district=district
+        ).exclude(role=UserRoles.DISTRICT_ADMIN)
+        return users
 
     def get_success_url(self):
         return "/"
 
 
 class NurseSignUpView(UserFormView, CreateView):
+    form_class = UserSignupForm
+    pass
+
+
+class NurseDeleteView(UserFormView, DeleteView):
+    pass
+
+
+class NurseUpdateView(UserFormView, UpdateView):
     pass
 
 
@@ -53,10 +75,23 @@ class UserListVeiw(AdminAuthMixin, ListView):
             deleted=False, facility__ward__lsg_body__district=district
         ).exclude(role=UserRoles.DISTRICT_ADMIN)
         search_filter = self.request.GET.get("search")
+        role_filter = self.request.GET.get("role")
+        facility_filter = self.request.GET.get("facility")
 
         if search_filter is not None:
             users = users.filter(name__icontains=search_filter)
+        if role_filter is not None:
+            users = users.filter(role=role_filter)
+        if facility_filter is not None:
+            users = users.filter(facility=facility_filter)
         return users
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        district = self.request.user.facility.ward.lsg_body.district
+        ctx["facilities"] = Facility.objects.filter(ward__lsg_body__district=district)
+
+        return ctx
 
 
 class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
