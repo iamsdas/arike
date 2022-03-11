@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -195,7 +194,9 @@ class FamilyListVeiw(NurseAuthMixin, ListView):
     context_object_name = "members"
 
     def get_queryset(self):
-        family_members = FamilyMember.objects.filter(deleted=False, patient__pk=self.kwargs["pk"])
+        family_members = FamilyMember.objects.filter(
+            deleted=False, patient__pk=self.kwargs["pk"]
+        )
         search_filter = self.request.GET.get("search")
         if search_filter is not None:
             family_members = family_members.filter(full_name__icontains=search_filter)

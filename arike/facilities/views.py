@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
@@ -34,7 +35,12 @@ class FacilityUpdateView(GenericFacilityFormView, UpdateView):
 
 
 class FacilityDeleteView(GenericFacilityFormView, DeleteView):
-    pass
+    def delete(self, request: HttpRequest, *args: str, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.deleted = True
+        self.object.save()
+        return HttpResponseRedirect(success_url)
 
 
 class GenericFacilityListVeiw(AdminAuthMixin, ListView):

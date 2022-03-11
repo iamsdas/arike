@@ -1,18 +1,19 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse
-from django.views.generic import ListView
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import (
     CreateView,
+    DeleteView,
     DetailView,
+    ListView,
     RedirectView,
     UpdateView,
-    DeleteView,
 )
-from arike.facilities.models import Facility
 
+from arike.facilities.models import Facility
 from arike.users.forms import UserForm, UserSignupForm
 from arike.users.models import UserRoles
 
@@ -57,7 +58,12 @@ class NurseSignUpView(UserFormView, CreateView):
 
 
 class NurseDeleteView(UserFormView, DeleteView):
-    pass
+    def delete(self, request: HttpRequest, *args: str, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.deleted = True
+        self.object.save()
+        return HttpResponseRedirect(success_url)
 
 
 class NurseUpdateView(UserFormView, UpdateView):
