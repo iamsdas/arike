@@ -13,7 +13,7 @@ from arike.patients.forms import (
 )
 from arike.patients.models import FamilyMember, Patient, PatientDisease, Treatment
 from arike.facilities.models import Ward
-from arike.visits.models import TreatmentNote, VisitDetails, VisitSchedule
+from arike.visits.models import TreatmentNote, VisitDetails
 from arike.users.models import UserRoles
 
 
@@ -66,15 +66,23 @@ class PatientDeleteView(GenericPatientFormView, DeleteView):
 class GenericFamilyMemberFormView(NurseAuthMixin):
     form_class = FamilyMemberForm
     template_name = "family/form.html"
-    slug_field = "id"
+    slug_field = "pk"
     slug_url_kwarg = "id"
 
     def get_queryset(self):
-        patient_pk = self.kwargs["pk"]
-        return FamilyMember.objects.filter(patient__pk=patient_pk, deleted=False)
+        return FamilyMember.objects.all()
+
+    def get_object(self):
+        return self.get_queryset().get(pk=self.kwargs["id"])
 
     def get_success_url(self):
         return reverse_lazy("patients:family", kwargs={"pk": self.kwargs["pk"]})
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.patient = Patient.objects.get(pk=self.kwargs["pk"])
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class MemberCreateView(GenericFamilyMemberFormView, CreateView):
@@ -96,11 +104,13 @@ class GenericDiseaseFormView(NurseAuthMixin):
     slug_url_kwarg = "id"
 
     def get_queryset(self):
-        patient_pk = self.kwargs["pk"]
-        return PatientDisease.objects.filter(patient__pk=patient_pk)
+        return PatientDisease.objects.all()
 
     def get_success_url(self):
         return reverse_lazy("patients:disease", kwargs={"pk": self.kwargs["pk"]})
+
+    def get_object(self):
+        return self.get_queryset().get(pk=self.kwargs["id"])
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -128,11 +138,13 @@ class GenericTreatmentFormView(NurseAuthMixin):
     slug_url_kwarg = "id"
 
     def get_queryset(self):
-        patient_pk = self.kwargs["pk"]
-        return Treatment.objects.filter(patient__pk=patient_pk)
+        return Treatment.objects.all()
 
     def get_success_url(self):
         return reverse_lazy("patients:treatments", kwargs={"pk": self.kwargs["pk"]})
+
+    def get_object(self):
+        return self.get_queryset().get(pk=self.kwargs["id"])
 
     def form_valid(self, form):
         self.object = form.save(commit=False)

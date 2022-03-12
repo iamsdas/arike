@@ -42,7 +42,6 @@ class FamilyMemberForm(ModelForm):
             "education",
             "occupation",
             "remarks",
-            "patient",
         ]
 
 

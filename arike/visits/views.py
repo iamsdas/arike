@@ -89,7 +89,7 @@ class TreatmentsListVeiw(NurseAuthMixin, ListView):
     def get_queryset(self):
         schedule = VisitSchedule.objects.get(pk=self.kwargs["pk"])
         patient = schedule.patient
-        treatments = Treatment.objects.filter(patient=patient)
+        treatments = Treatment.objects.filter(patient=patient, deleted=False)
         return treatments
 
     def get_context_data(self, **kwargs):
@@ -106,7 +106,9 @@ class GenericTreatmenNotetFormView(NurseAuthMixin):
 
     def get_queryset(self):
         schedule = VisitSchedule.objects.get(pk=self.kwargs["pk"])
-        return TreatmentNote.objects.filter(treatment__patient=schedule.patient)
+        return TreatmentNote.objects.filter(
+            treatment__patient=schedule.patient, deleted=False
+        )
 
     def get_success_url(self):
         return reverse_lazy("visits:treatments", kwargs={"pk": self.kwargs["pk"]})
