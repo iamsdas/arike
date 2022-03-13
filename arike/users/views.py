@@ -1,3 +1,7 @@
+from allauth.account import signals
+from allauth.account.views import SignupView
+from allauth.account.utils import send_email_confirmation
+from allauth.exceptions import ImmediateHttpResponse
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -52,9 +56,25 @@ class UserFormView(AdminAuthMixin):
         return "/users/list/"
 
 
-class NurseSignUpView(UserFormView, CreateView):
+class NurseSignUpView(AdminAuthMixin, SignupView):
     form_class = UserSignupForm
-    pass
+    template_name = "users/user_form.html"
+    slug_field = "username"
+    slug_url_kwarg = "username"
+
+    def get_success_url(self):
+        return "/users/list/"
+
+    def form_valid(self, form):
+        self.user = form.save(self.request)
+        try:
+            signals.user_signed_up.send(
+                sender=self.user.__class__, request=self.request, user=self.user, **{}
+            )
+            send_email_confirmation(self.request, self.user, True)
+            return HttpResponseRedirect(self.get_success_url())
+        except ImmediateHttpResponse as e:
+            return e.response
 
 
 class NurseDeleteView(UserFormView, DeleteView):

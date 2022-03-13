@@ -66,6 +66,10 @@ class UserSignupForm(UserCreationForm, UserForm):
         self.fields["password1"].widget.attrs.update({"placeholder": "Password"})
         self.fields["password2"].widget.attrs.update({"placeholder": "Password"})
 
+    # def save(self, request):
+    #     user = super().save(request)
+    #     return user
+
 
 class UserSocialSignupForm(SocialSignupForm):
     """
