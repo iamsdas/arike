@@ -171,6 +171,9 @@ class TreatmentDetailView(NurseAuthMixin, DetailView):
     slug_field = "id"
     slug_url_kwarg = "id"
 
+    def get_object(self):
+        return Treatment.objects.get(pk=self.kwargs["id"])
+
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx["notes"] = list(
