@@ -1,11 +1,17 @@
 # Arike
 
-Behold My Awesome Project!
-
 [![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
 [![Black code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
-License: MIT
+The is a hospital management system that caters to a system of specialized medical staff tending to patients under palliative care where the primary nurses can refer their patients to various specialists.
+
+![image](https://user-images.githubusercontent.com/26461855/184953635-b1652880-b415-45f6-9df8-797a82ede584.png)
+
+
+## Demo Login Credentials
+- **District Admin:** distadmin@arike.org (Password@1)
+- **Primary Nurse:** primarynurse@arike.org (Password@1)
+- **Secondary Nurse:** secondarynurse@arike.org (Password@1)
 
 ## Settings
 
